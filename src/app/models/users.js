@@ -22,7 +22,7 @@ const UserSchema = new mongoose.Schema({
     type: String,
     required: [true, 'Please provide a password.'],
     minlength: [6, 'Password must be at least 6 characters long.'],
-    select: false, // Prevents password from being sent in queries by default
+    select: false,
   },
   createdAt: {
     type: Date,
