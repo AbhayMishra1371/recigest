@@ -1,14 +1,10 @@
 import { NextResponse } from "next/server";
-import OpenAI from "openai";
 import { getUserFromToken } from "@/lib/auth";
-
-const client = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY!,
-});
+import { generateRecipeWithGemini } from "@/lib/generate";
 
 export async function POST(req: Request) {
   try {
-    // ✅ JWT check
+    // ✅ Protect API with JWT
     const user = await getUserFromToken();
     if (!user) {
       return NextResponse.json(
@@ -17,51 +13,36 @@ export async function POST(req: Request) {
       );
     }
 
+    // ✅ Get food item from frontend
     const { food } = await req.json();
 
     if (!food || food.trim().length === 0) {
       return NextResponse.json(
-        { success: false, error: "Food name is required" },
+        { success: false, error: "Food item is required" },
         { status: 400 }
       );
     }
 
-    const prompt = `
-Create a detailed recipe for "${food}".
+    // ✅ Call Gemini function
+    const result = await generateRecipeWithGemini(food);
 
-Include:
-- Ingredients list
-- Step-by-step cooking instructions
-- Cooking time
-- Serving size
-- Health tips
-
-Format it clearly with headings.
-    `;
-
-    // ✅ CORRECT OpenAI Call (No fetch, No .json, No choices bug)
-    const completion = await client.chat.completions.create({
-      model: "gpt-4o-mini", // ✅ Stable & cheap
-      messages: [{ role: "user", content: prompt }],
-      temperature: 0.7,
-    });
-
-    const recipe = completion.choices[0].message.content;
+    if (!result.success) {
+      return NextResponse.json(
+        { success: false, error: result.error },
+        { status: 500 }
+      );
+    }
 
     return NextResponse.json({
       success: true,
-      food,
-      recipe,
+      food: result.food,
+      recipe: result.recipe,
     });
 
-  } catch (error: any) {
-    console.error("Recipe API Error:", error);
-
+  } catch (error) {
+    console.error("Recipe Generate API Error:", error);
     return NextResponse.json(
-      {
-        success: false,
-        error: error?.message || "Recipe generation failed",
-      },
+      { success: false, error: "Internal Server Error" },
       { status: 500 }
     );
   }
