@@ -4,7 +4,7 @@ import { generateRecipeWithGemini } from "@/lib/generate";
 
 export async function POST(req: Request) {
   try {
-    // ✅ Protect API with JWT
+    // Protect API with JWT
     const user = await getUserFromToken();
     if (!user) {
       return NextResponse.json(
@@ -13,7 +13,7 @@ export async function POST(req: Request) {
       );
     }
 
-    // ✅ Get food item from frontend
+    // Get food item from frontend
     const { food } = await req.json();
 
     if (!food || food.trim().length === 0) {
@@ -23,7 +23,7 @@ export async function POST(req: Request) {
       );
     }
 
-    // ✅ Call Gemini function
+  
     const result = await generateRecipeWithGemini(food);
 
     if (!result.success) {
