@@ -1,7 +1,8 @@
 import { NextResponse } from 'next/server';
 import { connectDB } from '@/lib/dbConnect';
 import User from '@/models/users';
-
+// here are all the http request to
+// create a new user and get all users
 export async function POST(req:Request) {
   try {
     await connectDB();
