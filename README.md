@@ -80,7 +80,6 @@ Before running this application, make sure you have the following installed:
 
    ```env
    MONGODB_URI=mongodb://localhost:27017/recigest
-   # Or for MongoDB Atlas: mongodb+srv://username:password@cluster.mongodb.net/recigest
 
    JWT_SECRET=your_super_secret_jwt_key_here
    GOOGLE_AI_API_KEY=your_google_generative_ai_api_key
