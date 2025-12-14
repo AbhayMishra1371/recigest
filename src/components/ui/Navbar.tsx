@@ -1,52 +1,44 @@
-"use client";
-//just for testing
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { Button } from "./button";
+import { Sprout } from "lucide-react";
 
-export default function Navbar() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-
-  useEffect(() => {
-    // Check if token exists in cookies (client side)
-    const token = document.cookie.includes("token=");
-    setIsLoggedIn(token);
-  }, []);
-
-  const handleLogout = async () => {
-    await fetch("/api/auth/logout");
-    document.cookie = "token=; Max-Age=0; path=/;";
-    setIsLoggedIn(false);
-    window.location.href = "/signin";
-  };
-
+export default function Header() {
   return (
-    <nav style={{
-      display: "flex",
-      gap: "20px",
-      padding: "15px",
-      background: "#1e1e1e",
-      color: "white",
-    }}>
-      <Link href="/">Home</Link>
+    <header className="sticky top-0 z-50 w-full border-b border-white/10 bg-transparent backdrop-blur-md">
+      <div className="container mx-auto flex h-16 items-center justify-between px-4 lg:px-8">
+        
+        {/* Logo */}
+        <Link href="/" className="flex items-center gap-2 text-white">
+          <Sprout className="h-6 w-6" />
+          <span className="text-xl font-semibold">Recigest</span>
+        </Link>
 
-      {!isLoggedIn && (
-        <>
-          <Link href="/signup">Signup</Link>
-          <Link href="/signin">Signin</Link>
-        </>
-      )}
+        {/* Navigation */}
+        <nav className="hidden md:flex items-center gap-6">
+          {["Home", "Features", "Community"].map((item) => (
+            <Link
+              key={item}
+              href={`/${item.toLowerCase() === "home" ? "" : item.toLowerCase()}`}
+              className="text-sm font-medium text-white/90 hover:text-white transition-colors"
+            >
+              {item}
+            </Link>
+          ))}
+        </nav>
 
-      {isLoggedIn && (
-        <>
-          <Link href="/dashboard">Dashboard</Link>
-          <button 
-            onClick={handleLogout} 
-            style={{ background: "transparent", border: "none", color: "white", cursor: "pointer" }}
+        {/* Auth Buttons */}
+        <div className="flex items-center gap-3">
+          <Button
+            variant="ghost"
+            className="text-white hover:bg-white/10"
           >
-            Logout
-          </button>
-        </>
-      )}
-    </nav>
+            Sign In
+          </Button>
+          <Button className="bg-white text-black hover:bg-white/90 font-medium">
+            Get Started
+          </Button>
+        </div>
+      </div>
+    </header>
   );
 }
