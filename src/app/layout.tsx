@@ -1,16 +1,15 @@
 import type React from "react"
 import type { Metadata } from "next"
 import { Geist, Geist_Mono } from "next/font/google"
-// import { Analytics } from "@vercel/analytics/next"
 import "./globals.css"
+import { Navbar } from "@/components/Navbar"
 
 const _geist = Geist({ subsets: ["latin"] })
 const _geistMono = Geist_Mono({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-  title: "Recigest - AI-Powered Recipe Generator",
-  description:
-    "Turn ingredients into delicious meals with our AI chef. Get personalized recipes based on what you have in your pantry.",
+  title: "Recigest - AI-Powered Recipe Discovery",
+  description: "Turn your pantry ingredients into delicious meals with AI-powered recipe suggestions",
   generator: "v0.app",
   icons: {
     icon: [
@@ -39,8 +38,8 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`font-sans antialiased`}>
+         <Navbar />
         {children}
-        {/* <Analytics /> */}
       </body>
     </html>
   )

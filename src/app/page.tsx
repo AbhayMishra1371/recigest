@@ -1,13 +1,13 @@
-import Navbar  from "@/components/ui/Navbar"
-import HeroSearch  from "@/components/ui/hero-search"
-// import { TrendingDishes } from "@/components/trending-dishes"
+import { Navbar } from "@/components/Navbar"
+import { HeroSection } from "@/components/hero"
+import { TrendingDishes } from "@/components/Trend"
 
 export default function Home() {
   return (
     <main className="min-h-screen">
-      <Navbar />
-      <HeroSearch />
-      {/* <TrendingDishes /> */} 
+     
+      <HeroSection />
+      <TrendingDishes />
     </main>
   )
 }
