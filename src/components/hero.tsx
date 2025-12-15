@@ -1,48 +1,56 @@
-"use client"
+import { Search, Camera } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import Image from "next/image";
 
-import { useState } from "react"
-import { Search, Camera } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-
-export function HeroSection() {
-  const [searchQuery, setSearchQuery] = useState("")
-
+const HeroSection = () => {
   return (
-    <section className="relative h-[500px] flex items-center justify-center overflow-hidden">
-      <div
-        className="absolute inset-0 bg-cover bg-center brightness-[0.85]"
-        style={{
-          backgroundImage: "url('/assets/hero-kitchen.jpg')",
-        }}
+    <section className="relative min-h-[500px] flex items-center justify-center overflow-hidden">
+      
+      {/* Background Image */}
+      <Image
+        src="/assets/hero-kitchen.jpg"
+        alt="Hero Kitchen"
+        fill
+        priority
+        className="object-cover"
       />
 
-      <div className="relative z-10 max-w-3xl mx-auto px-6 text-center">
-        <div className="bg-white/20 backdrop-blur-md rounded-2xl p-8 shadow-2xl border border-white/30">
-          <div className="flex items-center gap-4 mb-4">
-            <div className="relative flex-1">
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-              <Input
-                type="text"
-                placeholder="What's in your pantry? (e.g., Chicken, Rice ...)"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-12 pr-4 py-6 text-base border-gray-200 rounded-xl focus:ring-2 focus:ring-[#5BA89D] focus:border-transparent"
-              />
-            </div>
-            <Button
-              size="lg"
-              className="bg-[#B24B22] hover:bg-[#AB4343] text-white px-6 py-6 rounded-xl whitespace-nowrap"
-            >
-              <Camera className="w-5 h-5 mr-2" />
-              Snap Leftovers
-            </Button>
-          </div>
+      {/* Overlay */}
+      <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/30 to-black/50" />
 
-          
+      {/* Content */}
+      <div className="relative z-10 w-full max-w-2xl px-4 py-16 flex flex-col items-center gap-8">
+
+        {/* Glass Search Bar */}
+        <div className="w-full flex items-center gap-3 
+            bg-white/20 backdrop-blur-xl 
+            rounded-full shadow-2xl 
+            p-2 pl-5 border border-white/30
+            animate-slide-up">
+
+          <Search className="w-5 h-5 text-white/80 flex-shrink-0" />
+
+          <input
+            type="text"
+            placeholder="What's in your pantry? (e.g., Chicken, Rice...)"
+            className="flex-1 bg-transparent border-none outline-none 
+              text-white placeholder:text-white/70 py-3"
+          />
+
+          <Button variant="snap" size="lg" className="rounded-full gap-2">
+            <Camera className="w-5 h-5" />
+            <span className="hidden sm:inline">Snap Leftovers</span>
+          </Button>
         </div>
-        <p className="text-[#2C3E3D] text-lg">Our AI chef turns what you have into meals you'll love.</p>
+
+        {/* Tagline */}
+        <p className="text-lg text-white/90 text-center font-medium animate-fade-in">
+          Our AI chef turns what you have into meals you'll love.
+        </p>
+
       </div>
     </section>
-  )
-}
+  );
+};
+
+export default HeroSection;

@@ -1,5 +1,5 @@
 import { Navbar } from "@/components/Navbar"
-import { HeroSection } from "@/components/hero"
+import HeroSection  from "@/components/hero"
 import { TrendingDishes } from "@/components/Trend"
 
 export default function Home() {
