@@ -125,9 +125,9 @@ const [form, setForm] = useState({ name: "", email: "", password: "" });
             <Button
               type="submit"
               disabled={loading}
-              className="w-full h-12 bg-[#5A7C5E] hover:bg-[#4A6B4E] text-white rounded-xl font-medium text-lg disabled:opacity-50"
+             className="w-full h-12 bg-[#7BA147] hover:bg-[#95AB7E] text-black rounded-xl font-medium text-lg"
             >
-              {loading ? "Creating Account..." : "Create Account"}
+                Sign Up
             </Button>
           </form>
 

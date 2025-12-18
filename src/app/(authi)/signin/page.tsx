@@ -76,7 +76,7 @@ export default function SignInPage() {
 
             <Button
               type="submit"
-              className="w-full h-12 bg-[#5A7C5E] hover:bg-[#4A6B4E] text-white rounded-xl font-medium text-lg"
+              className="w-full h-12 bg-[#7BA147] hover:bg-[#95AB7E] text-black rounded-xl font-medium text-lg"
             >
               Sign In
             </Button>
