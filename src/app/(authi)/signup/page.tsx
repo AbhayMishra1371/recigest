@@ -28,7 +28,7 @@ const [form, setForm] = useState({ name: "", email: "", password: "" });
       alert(res.data.message);
 
       if (res.data.success) {
-        window.location.href = "/signin";
+        window.location.href = "/";
       }
     } catch (err: unknown) {
       if (typeof err === "object" && err !== null && "response" in err) {
