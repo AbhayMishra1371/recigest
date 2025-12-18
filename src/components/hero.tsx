@@ -4,7 +4,7 @@ import Image from "next/image";
 
 const HeroSection = () => {
   return (
-    <section className="relative min-h-[500px] flex items-center justify-center overflow-hidden">
+    <section className="relative min-h-[500px] flex items-center justify-center overflow-hidden bg-cover bg-center">
       
       {/* Background Image */}
       <Image
@@ -14,10 +14,10 @@ const HeroSection = () => {
         priority
         className="object-cover"
       />
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#F5F3EE]/40 to-[#F5F3EE]"></div>
 
       {/* Overlay */}
-      <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/30 to-black/50" />
-
+     <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#F5F3EE]/20 to-[#F5F3EE] pointer-events-none"></div>
       {/* Content */}
       <div className="relative z-10 w-full max-w-2xl px-4 py-16 flex flex-col items-center gap-8">
 
@@ -28,13 +28,13 @@ const HeroSection = () => {
             p-2 pl-5 border border-white/30
             animate-slide-up">
 
-          <Search className="w-5 h-5 text-white/80 flex-shrink-0" />
+          <Search className="w-5 h-5 text-black/80 flex-shrink-0" />
 
           <input
             type="text"
             placeholder="What's in your pantry? (e.g., Chicken, Rice...)"
             className="flex-1 bg-transparent border-none outline-none 
-              text-white placeholder:text-white/70 py-3"
+              text-black placeholder:text-black/70 py-3"
           />
 
           <Button variant="snap" size="lg" className="rounded-full gap-2">
@@ -44,7 +44,7 @@ const HeroSection = () => {
         </div>
 
         {/* Tagline */}
-        <p className="text-lg text-white/90 text-center font-medium animate-fade-in">
+        <p className="text-lg text-black/90 text-center font-medium animate-fade-in">
           Our AI chef turns what you have into meals you'll love.
         </p>
 

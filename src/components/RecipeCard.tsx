@@ -18,7 +18,7 @@ interface RecipeCardProps {
 
 export function RecipeCard({ recipe }: RecipeCardProps) {
   return (
-    <div className="bg-[#E2B3B3] rounded-2xl shadow-md hover:shadow-xl transition-shadow overflow-hidden group cursor-pointer">
+    <div className="bg-gray-50 rounded-2xl shadow-md hover:shadow-xl transition-shadow overflow-hidden group cursor-pointer">
       <div className="relative h-64 overflow-hidden">
         <Image
           src={recipe.image || "/placeholder.svg"}
@@ -54,3 +54,4 @@ export function RecipeCard({ recipe }: RecipeCardProps) {
     </div>
   )
 }
+

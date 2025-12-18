@@ -25,9 +25,10 @@ export function Navbar() {
           </Link>
         </nav>
 
-        <div className="flex items-center gap-4">
-          <button className="text-[#3D4A3E] font-medium hover:text-[#5A7C5E] transition-colors">Sign In</button>
-          <Button className="bg-[#5A7C5E] hover:bg-[#4A6B4E] text-white rounded-full px-6 py-2.5 font-medium">
+        <div className="flex items-center gap-6">
+          <Link href="/signin" className="text-[#3D4A3E] font-bold font-large hover:text-[#5A7C5E] transition-colors">Sign In</Link>
+           <Link href="/signup" className="text-[#3D4A3E] font-bold font-large  hover:text-[#5A7C5E] transition-colors">Sign up</Link>
+          <Button className="bg-[#AA4D4D] hover:bg-[#823131] text-white rounded-full px-6 py-2.5 font-medium">
             Get Started
           </Button>
         </div>
