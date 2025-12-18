@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import { getUserFromToken } from "@/lib/auth";
 import { generateRecipeWithGemini } from "@/lib/generate";
+import { rateLimit } from "@/lib/rateLimit";
+import redisClient from "@/lib/redis";
 
 export async function POST(req: Request) {
   try {
@@ -10,6 +12,16 @@ export async function POST(req: Request) {
       return NextResponse.json(
         { success: false, error: "Unauthorized" },
         { status: 401 }
+      );
+    }
+
+    // Rate Limiting (Limit by User ID or IP)
+    // Using User ID since we have auth
+    const limitResult = await rateLimit(`recipe_gen:${user.userId || 'anonymous'}`);
+    if (!limitResult.success) {
+       return NextResponse.json(
+        { success: false, error: "Too many requests. Please try again later." },
+        { status: 429 }
       );
     }
 
@@ -23,7 +35,21 @@ export async function POST(req: Request) {
       );
     }
 
-  
+    // Redis Caching
+    const cacheKey = `recipe:${food.trim().toLowerCase()}`;
+    const cachedRecipe = await redisClient.get(cacheKey);
+
+    if (cachedRecipe) {
+        console.log(`Cache Hit for: ${food}`);
+        return NextResponse.json({
+            success: true,
+            food: food,
+            recipe: cachedRecipe, // Cached value is likely the string recipe
+            isCached: true
+        });
+    }
+
+    console.log(`Cache Miss for: ${food}`);
     const result = await generateRecipeWithGemini(food);
 
     if (!result.success) {
@@ -33,10 +59,18 @@ export async function POST(req: Request) {
       );
     }
 
+    // Store in Redis (Expire in 1 hour similar to standard caching)
+    if (result.recipe) {
+        await redisClient.set(cacheKey, result.recipe, {
+            EX: 3600 
+        });
+    }
+
     return NextResponse.json({
       success: true,
       food: result.food,
       recipe: result.recipe,
+      isCached: false
     });
 
   } catch (error) {
