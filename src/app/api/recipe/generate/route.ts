@@ -1,12 +1,11 @@
 import { NextResponse } from "next/server";
 import { getUserFromToken } from "@/lib/auth";
 import { generateRecipeWithGemini } from "@/lib/generate";
-import { rateLimit } from "@/lib/rateLimit";
-import redisClient from "@/lib/redis";
+import { ratelimit } from "@/lib/rateLimit";
+import redis from "@/lib/redis";
 
 export async function POST(req: Request) {
   try {
-    // Protect API with JWT
     const user = await getUserFromToken();
     if (!user) {
       return NextResponse.json(
@@ -15,17 +14,18 @@ export async function POST(req: Request) {
       );
     }
 
-    // Rate Limiting (Limit by User ID or IP)
-    // Using User ID since we have auth
-    const limitResult = await rateLimit(`recipe_gen:${user.userId || 'anonymous'}`);
-    if (!limitResult.success) {
+    // Rate Limiting (Upstash)
+    // defined in lib/rateLimit.ts with 10 requests per 60 seconds
+    const identifier = `recipe_gen:${user.userId || 'anonymous'}`;
+    const { success } = await ratelimit.limit(identifier);
+
+    if (!success) {
        return NextResponse.json(
         { success: false, error: "Too many requests. Please try again later." },
         { status: 429 }
       );
     }
 
-    // Get food item from frontend
     const { food } = await req.json();
 
     if (!food || food.trim().length === 0) {
@@ -35,16 +35,16 @@ export async function POST(req: Request) {
       );
     }
 
-    // Redis Caching
+    // Redis Caching (Upstash)
     const cacheKey = `recipe:${food.trim().toLowerCase()}`;
-    const cachedRecipe = await redisClient.get(cacheKey);
+    const cachedRecipe = await redis.get<string>(cacheKey);
 
     if (cachedRecipe) {
         console.log(`Cache Hit for: ${food}`);
         return NextResponse.json({
             success: true,
             food: food,
-            recipe: cachedRecipe, // Cached value is likely the string recipe
+            recipe: cachedRecipe,
             isCached: true
         });
     }
@@ -59,11 +59,11 @@ export async function POST(req: Request) {
       );
     }
 
-    // Store in Redis (Expire in 1 hour similar to standard caching)
+    // Store in Redis (Upstash)
     if (result.recipe) {
-        await redisClient.set(cacheKey, result.recipe, {
-            EX: 3600 
-        });
+        // Upstash redis.set supports options as third arg, but signature might vary. 
+        // @upstash/redis set(key, value, { ex: seconds })
+        await redis.set(cacheKey, result.recipe, { ex: 3600 });
     }
 
     return NextResponse.json({

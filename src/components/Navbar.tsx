@@ -1,36 +1,35 @@
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
-import { ChefHat } from "lucide-react"
+import { Leaf } from "lucide-react"
 
 export function Navbar() {
   return (
-    <header className="absolute top-0 left-0 right-0 z-50 px-6 py-4">
-      <div className="max-w-7xl mx-auto flex items-center justify-between bg-white/80 backdrop-blur-sm rounded-full px-6 py-3 border border-white/40 shadow-lg">
-        <div className="flex items-center gap-2">
-          <div className="w-10 h-10 bg-[#5BA89D] rounded-lg flex items-center justify-center">
-            <ChefHat className="w-6 h-6 text-white" />
+    <header className="fixed top-0 left-0 right-0 z-50 px-6 py-6">
+      <div className="max-w-7xl mx-auto flex items-center justify-between bg-[#F5F3EE]/90 backdrop-blur-md rounded-full px-8 py-4 shadow-sm">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 bg-white rounded-lg flex items-center justify-center">
+            <Leaf className="w-5 h-5 text-[#5A7C5E]" />
           </div>
-          <span className="text-xl font-bold text-[#2C3E3D]">Recigest</span>
+          <span className="text-2xl font-semibold text-[#3D4A3E]">Recigest</span>
         </div>
 
         <nav className="hidden md:flex items-center gap-8">
-          <Link href="/" className="text-[#2C3E3D] font-medium hover:text-[#5BA89D] transition-colors">
+          <Link href="/" className="text-[#3D4A3E] font-medium hover:text-[#5A7C5E] transition-colors">
             Home
           </Link>
-          <Link href="/features" className="text-[#2C3E3D] font-medium hover:text-[#5BA89D] transition-colors">
+          <Link href="/features" className="text-[#3D4A3E] font-medium hover:text-[#5A7C5E] transition-colors">
             Features
           </Link>
-          <Link href="/community" className="text-[#2C3E3D] font-medium hover:text-[#5BA89D] transition-colors">
+          <Link href="/community" className="text-[#3D4A3E] font-medium hover:text-[#5A7C5E] transition-colors">
             Community
           </Link>
         </nav>
 
-        <div className="flex items-center gap-3">
-          {/* Sign In and Get Started buttons */}
-          <Button variant="ghost" className="text-[#2C3E3D] hover:text-[#5BA89D] hover:bg-transparent">
-            Sign In
+        <div className="flex items-center gap-4">
+          <button className="text-[#3D4A3E] font-medium hover:text-[#5A7C5E] transition-colors">Sign In</button>
+          <Button className="bg-[#5A7C5E] hover:bg-[#4A6B4E] text-white rounded-full px-6 py-2.5 font-medium">
+            Get Started
           </Button>
-          <Button className="bg-[#5BA89D] hover:bg-[#4A9388] text-white">Get Started</Button>
         </div>
       </div>
     </header>

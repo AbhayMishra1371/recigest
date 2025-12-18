@@ -1,18 +1,15 @@
-import { RateLimiterRedis } from 'rate-limiter-flexible';
-import redisClient from './redis';
+import { Ratelimit } from "@upstash/ratelimit";
+import redis from "./redis";
 
-const rateLimiter = new RateLimiterRedis({
-  storeClient: redisClient,
-  keyPrefix: 'middleware',
-  points: 10, // 10 requests
-  duration: 60, // per 60 seconds by default
+// Create a new ratelimiter, that allows 10 requests per 10 seconds
+export const ratelimit = new Ratelimit({
+  redis: redis,
+  limiter: Ratelimit.slidingWindow(10, "60 s"),
+  analytics: true,
+  /**
+   * Optional prefix for the keys used in redis.
+   *
+   * @default "@upstash/ratelimit"
+   */
+  prefix: "@upstash/ratelimit",
 });
-
-export const rateLimit = async (key: string) => {
-  try {
-    await rateLimiter.consume(key);
-    return { success: true };
-  } catch (rejRes) {
-    return { success: false };
-  }
-};
