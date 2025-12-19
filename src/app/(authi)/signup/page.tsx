@@ -10,8 +10,7 @@ import { Label } from "@/components/ui/label"
 import { Leaf } from "lucide-react"
 
 export default function SignUpPage() {
-const [form, setForm] = useState({ name: "", email: "", password: "" });
-  const [confirmPassword, setConfirmPassword] = useState("")
+const [form, setForm] = useState({ name: "", email: "", password: "",confirmPassword:"" });
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -19,7 +18,7 @@ const [form, setForm] = useState({ name: "", email: "", password: "" });
     setLoading(true);
 
     try {
-      if (form.password !== confirmPassword) {
+      if (form.password !== form.confirmPassword) {
         alert("Passwords do not match");
         setLoading(false);
         return;
@@ -115,8 +114,8 @@ const [form, setForm] = useState({ name: "", email: "", password: "" });
                 id="confirmPassword"
                 type="password"
                 placeholder="Enter your confirm password"
-                value={confirmPassword}
-               onChange={(e) => setConfirmPassword(e.target.value)}
+                value={form.confirmPassword}
+               onChange={(e) => setForm({ ...form, confirmPassword: e.target.value })}
                 minLength={8}
                 className="h-12 rounded-xl border-[#D4CFC0] focus:border-[#5A7C5E] focus:ring-[#5A7C5E]"
               />

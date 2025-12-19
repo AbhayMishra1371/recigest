@@ -1,7 +1,7 @@
 "use client"
 
 import type React from "react"
-
+import api from "@/lib/axios";
 import { useState } from "react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
@@ -13,11 +13,25 @@ export default function SignInPage() {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    console.log("[v0] Sign in attempt:", { email })
-    // Handle sign in logic here
+  const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
+
+  try {
+    const res = await api.post("/auth/signin", {
+      email,
+      password,
+    });
+
+    if (res.data.success) {
+      alert("Login successful! 🎉");
+      window.location.href = "/"; // redirect to homepage or dashboard
+    } else {
+      alert(res.data.error || "Invalid credentials");
+    }
+  } catch (err: any) {
+    alert(err.response?.data?.message || "Login failed");
   }
+};
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#F5F3EE] via-[#E8E5DC] to-[#D4CFC0] flex items-center justify-center p-6">
