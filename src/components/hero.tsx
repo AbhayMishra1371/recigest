@@ -44,10 +44,23 @@ const HeroSection = () => {
     fetchSuggestions();
   }, [query]);
 
-  const handleSuggestionClick = (suggestion: string) => {
-    setQuery(suggestion);
+  const handleSearch = (searchQuery: string) => {
+    if (!searchQuery || searchQuery.trim().length === 0) return;
     setShowSuggestions(false);
+    setQuery(searchQuery); // Update state to show what was clicked
+    // Redirect to dynamic route /recipe/[foodItem]
+    router.push(`/recipe/${encodeURIComponent(searchQuery)}`);
+  };
+
+  const handleSuggestionClick = (suggestion: string) => {
+    handleSearch(suggestion);
     // Optional: Trigger search immediately or just fill input
+  };
+  
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+        handleSearch(query);
+    }
   };
 
   return (
@@ -86,12 +99,18 @@ const HeroSection = () => {
                     setShowSuggestions(true);
                 }}
                 onFocus={() => setShowSuggestions(true)}
+                onKeyDown={handleKeyDown}
                 placeholder="What's in your pantry? (e.g., Chicken, Rice...)"
                 className="flex-1 bg-transparent border-none outline-none 
                 text-black placeholder:text-black/70 py-3"
             />
 
-            <Button variant="snap" size="lg" className="rounded-full gap-2">
+            <Button 
+                variant="snap" 
+                size="lg" 
+                className="rounded-full gap-2"
+                onClick={() => handleSearch(query)}
+            >
                 <Camera className="w-5 h-5" />
                 <span className="hidden sm:inline">Snap Leftovers</span>
             </Button>

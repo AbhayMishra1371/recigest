@@ -36,7 +36,8 @@ export async function POST(req: Request) {
     }
 
     // Redis Caching (Upstash)
-    const cacheKey = `recipe:${food.trim().toLowerCase()}`;
+    // bumped version to recipe_json to invalidate old text-only cache
+    const cacheKey = `recipe_json:${food.trim().toLowerCase()}`;
     const cachedRecipe = await redis.get<string>(cacheKey);
 
     if (cachedRecipe) {
@@ -61,9 +62,8 @@ export async function POST(req: Request) {
 
     // Store in Redis (Upstash)
     if (result.recipe) {
-        // Upstash redis.set supports options as third arg, but signature might vary. 
-        // @upstash/redis set(key, value, { ex: seconds })
-        await redis.set(cacheKey, result.recipe, { ex: 3600 });
+        // Upstash redis.set supports options as third arg, less than 24h cache is safer for testing
+        await redis.set(cacheKey, result.recipe, { ex: 3600 * 24 });
     }
 
     return NextResponse.json({

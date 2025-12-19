@@ -18,41 +18,58 @@ You are a professional chef and nutrition expert.
 
 User searched for the food item: "${foodItem}"
 
-Generate a complete recipe with the following format:
+Generate a complete recipe in strictly VALID JSON format. Do not include markdown code blocks (like \`\`\`json). Just the raw JSON string.
 
-1. Dish Name
-2. Short Description (2–3 lines)
-3. Cuisine Type
-4. Preparation Time
-5. Cooking Time
-6. Total Time
-7. Ingredients (with exact quantities)
-8. Step-by-step Cooking Instructions (numbered)
-9. Cooking Tips
-10. Nutritional Information (Calories, Protein, Carbs, Fat)
-11. Best Side Dishes to Serve With
-12. Storage Tips
-13. Common Mistakes to Avoid
+Schema:
+{
+  "name": "Dish Name",
+  "description": "Short appetizing description (2-3 lines)",
+  "cuisine": "Cuisine Type",
+  "time": {
+    "prep": "10 min",
+    "cook": "20 min",
+    "total": "30 min"
+  },
+  "difficulty": "Easy/Medium/Hard",
+  "calories": "500 kcal",
+  "macros": {
+    "protein": "20g",
+    "carbs": "50g",
+    "fats": "15g"
+  },
+  "ingredients": [
+    "2 cups Rice",
+    "500g Chicken Breast"
+  ],
+  "instructions": [
+    "Step 1 description...",
+    "Step 2 description..."
+  ],
+  "tips": [
+    "Cooking tip 1",
+    "Cooking tip 2"
+  ]
+}
 
 Rules:
 - Keep instructions simple and beginner-friendly.
 - Use widely available ingredients.
 - Use metric units.
 - Make it accurate and safe for consumption.
-- If the dish is unhealthy, suggest a healthier alternative.
-
+- If the dish is unhealthy, suggest a healthier alternative in the tips.
     `;
 
     const result = await model.generateContent(prompt);
     const response = result.response;
-    const recipeText = response.text();
+    let recipeText = response.text();
     
-
+    // Clean up potential markdown formatting if the model disobeys
+    recipeText = recipeText.replace(/```json/g, "").replace(/```/g, "").trim();
 
     return {
       success: true,
       food: foodItem,
-      recipe: recipeText,
+      recipe: recipeText, // We return the stringified JSON to be parsed by the frontend or API handler
     };
   } catch (error: any) {
     console.error("Gemini Recipe Error:", error);
