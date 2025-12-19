@@ -48,8 +48,14 @@ export default function RecipePage() {
         const res = await api.post("/recipe/generate", { food: query });
         
         if (res.data.success) {
-            // Parse the JSON string from the API
-            const jsonRecipe = JSON.parse(res.data.recipe);
+            // Redis cache might return an object, while fresh API returns string
+            // Handle both cases to prevent crashes
+            let jsonRecipe;
+            if (typeof res.data.recipe === 'string') {
+                 jsonRecipe = JSON.parse(res.data.recipe);
+            } else {
+                 jsonRecipe = res.data.recipe;
+            }
             setRecipe(jsonRecipe);
         } else {
             setError(res.data.error || "Failed to generate recipe.");
@@ -106,13 +112,24 @@ export default function RecipePage() {
                         Back to Search
                     </Button>
                 </Link>
-                
-                <h1 className="text-4xl md:text-5xl font-bold text-[#3D4A3E] mb-4 leading-tight">
-                    {recipe.name}
-                </h1>
-                <p className="text-lg text-gray-600 max-w-2xl leading-relaxed">
-                    {recipe.description}
-                </p>
+
+                {/* Dynamic Hero Image */}
+                <div className="relative w-full h-[300px] md:h-[400px] mb-8 rounded-3xl overflow-hidden shadow-lg group">
+                  <img
+                    src={`https://image.pollinations.ai/prompt/delicious ${query} dish professional food photography cinematic lighting?width=1280&height=720&nologo=true&model=flux`}
+                    alt={recipe.name}
+                    className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-700"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                  <div className="absolute bottom-0 left-0 p-8">
+                     <h1 className="text-4xl md:text-5xl font-bold text-white mb-2 leading-tight drop-shadow-md">
+                        {recipe.name}
+                    </h1>
+                     <p className="text-lg text-white/90 max-w-2xl leading-relaxed drop-shadow-sm">
+                        {recipe.description}
+                    </p>
+                  </div>
+                </div>
 
                 {/* Metrics Row */}
                 <div className="flex flex-wrap gap-4 mt-6">
