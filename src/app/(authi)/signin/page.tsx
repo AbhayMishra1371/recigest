@@ -43,6 +43,27 @@ export default function SignInPage() {
           </div>
           <span className="text-3xl font-semibold text-[#3D4A3E]">Recigest</span>
         </Link>
+        <Button
+  type="button"
+  onClick={() => window.location.href = "/api/auth/google"}
+  className="w-full h-12 bg-white text-[#3D4A3E] rounded-xl border border-[#D4CFC0] hover:bg-[#F5F5F5] flex items-center justify-center gap-3 shadow-sm mb-6"
+>
+  {/* Google Icon */}
+  <svg
+    className="w-5 h-5"
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 48 48"
+  >
+    <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.23 9.22 3.25l6.91-6.91C35.58 2.38 30.15 0 24 0 14.63 0 6.36 5.38 2.69 13.22l7.99 6.21C12.49 13.44 17.76 9.5 24 9.5z"/>
+    <path fill="#4285F4" d="M46.1 24.5c0-1.57-.15-3.08-.39-4.5H24v9h12.85c-.56 2.85-2.23 5.27-4.73 6.93l7.38 5.72C43.82 37.25 46.1 31.21 46.1 24.5z"/>
+    <path fill="#FBBC05" d="M10.68 28.43c-.53-1.58-.83-3.28-.83-5.03s.3-3.45.83-5.03l-7.99-6.21C1.01 15.93 0 19.85 0 24c0 4.15 1.01 8.07 2.69 11.32l7.99-6.21z"/>
+    <path fill="#34A853" d="M24 48c6.15 0 11.58-2.03 15.59-5.5l-7.38-5.72c-2.05 1.38-4.63 2.2-8.21 2.2-6.24 0-11.51-3.94-13.32-9.43l-7.99 6.21C6.36 42.62 14.63 48 24 48z"/>
+  </svg>
+
+  <span className="font-medium">Sign in with Google</span>
+</Button>
+
+
 
         {/* Sign In Card */}
         <div className="bg-white/80 backdrop-blur-sm rounded-3xl shadow-xl p-8 border border-white/50">
