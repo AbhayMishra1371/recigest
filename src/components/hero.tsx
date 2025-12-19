@@ -1,8 +1,55 @@
+"use client";
+
 import { Search, Camera } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
+import { useState, useEffect, useRef } from "react";
+import api from "@/lib/axios";
+import { useRouter } from "next/navigation";
 
 const HeroSection = () => {
+  const [query, setQuery] = useState("");
+  const [suggestions, setSuggestions] = useState<string[]>([]);
+  const [showSuggestions, setShowSuggestions] = useState(false);
+  const wrapperRef = useRef<HTMLDivElement>(null);
+  const router = useRouter();
+
+  useEffect(() => {
+    // Click outside to close suggestions
+    function handleClickOutside(event: MouseEvent) {
+      if (wrapperRef.current && !wrapperRef.current.contains(event.target as Node)) {
+        setShowSuggestions(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+  useEffect(() => {
+    const fetchSuggestions = async () => {
+      if (query.length === 0) {
+        setSuggestions([]);
+        return;
+      }
+      try {
+        const res = await api.get(`/suggestions?query=${encodeURIComponent(query)}`);
+        setSuggestions(res.data);
+      } catch (error) {
+        console.error("Error fetching suggestions:", error);
+      }
+    };
+
+    fetchSuggestions();
+  }, [query]);
+
+  const handleSuggestionClick = (suggestion: string) => {
+    setQuery(suggestion);
+    setShowSuggestions(false);
+    // Optional: Trigger search immediately or just fill input
+  };
+
   return (
     <section className="relative min-h-[500px] flex items-center justify-center overflow-hidden bg-cover bg-center">
       
@@ -22,25 +69,48 @@ const HeroSection = () => {
       <div className="relative z-10 w-full max-w-2xl px-4 py-16 flex flex-col items-center gap-8">
 
         {/* Glass Search Bar */}
-        <div className="w-full flex items-center gap-3 
-            bg-white/20 backdrop-blur-xl 
-            rounded-full shadow-2xl 
-            p-2 pl-5 border border-white/30
-            animate-slide-up">
+        <div className="w-full relative" ref={wrapperRef}>
+            <div className="w-full flex items-center gap-3 
+                bg-white/20 backdrop-blur-xl 
+                rounded-full shadow-2xl 
+                p-2 pl-5 border border-white/30
+                animate-slide-up relative z-20">
 
-          <Search className="w-5 h-5 text-black/80 flex-shrink-0" />
+            <Search className="w-5 h-5 text-black/80 flex-shrink-0" />
 
-          <input
-            type="text"
-            placeholder="What's in your pantry? (e.g., Chicken, Rice...)"
-            className="flex-1 bg-transparent border-none outline-none 
-              text-black placeholder:text-black/70 py-3"
-          />
+            <input
+                type="text"
+                value={query}
+                onChange={(e) => {
+                    setQuery(e.target.value);
+                    setShowSuggestions(true);
+                }}
+                onFocus={() => setShowSuggestions(true)}
+                placeholder="What's in your pantry? (e.g., Chicken, Rice...)"
+                className="flex-1 bg-transparent border-none outline-none 
+                text-black placeholder:text-black/70 py-3"
+            />
 
-          <Button variant="snap" size="lg" className="rounded-full gap-2">
-            <Camera className="w-5 h-5" />
-            <span className="hidden sm:inline">Snap Leftovers</span>
-          </Button>
+            <Button variant="snap" size="lg" className="rounded-full gap-2">
+                <Camera className="w-5 h-5" />
+                <span className="hidden sm:inline">Snap Leftovers</span>
+            </Button>
+            </div>
+
+            {/* Suggestions Dropdown */}
+            {showSuggestions && suggestions.length > 0 && (
+                <div className="absolute top-full left-0 right-0 mt-2 bg-white/80 backdrop-blur-md rounded-2xl shadow-xl overflow-hidden z-10 border border-white/50">
+                    {suggestions.map((suggestion, index) => (
+                        <div
+                            key={index}
+                            className="px-6 py-3 hover:bg-white/50 cursor-pointer text-[#3D4A3E] font-medium transition-colors"
+                            onClick={() => handleSuggestionClick(suggestion)}
+                        >
+                            {suggestion}
+                        </div>
+                    ))}
+                </div>
+            )}
         </div>
 
         {/* Tagline */}
