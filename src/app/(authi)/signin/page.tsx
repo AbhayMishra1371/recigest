@@ -8,31 +8,34 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Leaf } from "lucide-react"
+import { useRouter } from "next/navigation"
 
 export default function SignInPage() {
+ const router = useRouter()
+
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
+  const [loading, setLoading] = useState(false)
 
   const handleSubmit = async (e: React.FormEvent) => {
-  e.preventDefault();
+    e.preventDefault()
+    setLoading(true)
 
-  try {
-    const res = await api.post("/auth/signin", {
-      email,
-      password,
-    });
+    try {
+      const res = await api.post("/auth/signin", { email, password })
 
-    if (res.data.success) {
-      alert("Login successful! 🎉");
-      window.location.href = "/"; // redirect to homepage or dashboard
-    } else {
-      alert(res.data.error || "Invalid credentials");
+      if (res.data.success) {
+        router.push("/") // Redirect to home
+      } else {
+        alert(res.data.error || "Invalid credentials")
+      }
+    } catch (err: any) {
+      alert(err.response?.data?.message || "Login failed")
+    } finally {
+      setLoading(false)
     }
-  } catch (err: any) {
-    alert(err.response?.data?.message || "Login failed");
   }
-};
-
+;
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#F5F3EE] via-[#E8E5DC] to-[#D4CFC0] flex items-center justify-center p-6">
       <div className="w-full max-w-md">
