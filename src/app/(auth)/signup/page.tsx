@@ -118,7 +118,7 @@ const [form, setForm] = useState({ name: "", email: "", password: "",confirmPass
                 type="password"
                 placeholder="Enter your password"
                 value={form.password}
-                onChange={(e:any) => setForm({ ...form, password: e.target.value })}
+                onChange={(e) => setForm({ ...form, password: e.target.value })}
                 required
                 minLength={8}
                 className="h-12 rounded-xl border-[#D4CFC0] focus:border-[#5A7C5E] focus:ring-[#5A7C5E]"

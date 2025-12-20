@@ -14,27 +14,7 @@ import {
   SidebarTrigger,
 } from "@/components/ui/sidebar"
 
-// Define the interface for the structured recipe
-interface RecipeData {
-  name: string;
-  description: string;
-  cuisine: string;
-  time: {
-    prep: string;
-    cook: string;
-    total: string;
-  };
-  difficulty: string;
-  calories: string;
-  macros: {
-    protein: string;
-    carbs: string;
-    fats: string;
-  };
-  ingredients: string[];
-  instructions: string[];
-  tips: string[];
-}
+import { RecipeData } from "@/types";
 
 export default function RecipePage() {
   const params = useParams();

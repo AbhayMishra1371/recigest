@@ -7,10 +7,7 @@ import { Leaf } from "lucide-react";
 import { useEffect, useState } from "react";
 import api from "@/lib/axios";
 
-interface User {
-  name: string;
-  email: string;
-}
+import { User } from "@/types";
 
 export function Navbar() {
   const [user, setUser] = useState<User | null>(null);

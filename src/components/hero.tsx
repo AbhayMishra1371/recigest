@@ -28,8 +28,8 @@ const HeroSection = () => {
   }, []);
 
   useEffect(() => {
-    const fetchSuggestions = async () => {
-      if (query.length === 0) {
+    const timer = setTimeout(async () => {
+      if (query.trim().length === 0) {
         setSuggestions([]);
         return;
       }
@@ -39,9 +39,9 @@ const HeroSection = () => {
       } catch (error) {
         console.error("Error fetching suggestions:", error);
       }
-    };
+    }, 300); // 300ms debounce
 
-    fetchSuggestions();
+    return () => clearTimeout(timer);
   }, [query]);
 
   const handleSearch = (searchQuery: string) => {
