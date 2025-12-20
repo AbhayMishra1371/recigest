@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Leaf } from "lucide-react"
+import { toast } from "sonner"
 import { useRouter } from "next/navigation"
 
 export default function SignInPage() {
@@ -25,12 +26,13 @@ export default function SignInPage() {
       const res = await api.post("/auth/signin", { email, password })
 
       if (res.data.success) {
+        toast.success("Signed in successfully")
         router.push("/") // Redirect to home
       } else {
-        alert(res.data.error || "Invalid credentials")
+        toast.error(res.data.error || "Invalid credentials")
       }
     } catch (err: any) {
-      alert(err.response?.data?.message || "Login failed")
+      toast.error(err.response?.data?.message || "Login failed")
     } finally {
       setLoading(false)
     }
