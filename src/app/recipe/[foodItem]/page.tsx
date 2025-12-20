@@ -5,14 +5,10 @@ import { useEffect, useState } from "react";
 import api from "@/lib/axios";
 import { Loader2, ChefHat, ArrowLeft, Clock, Flame, BarChart } from "lucide-react";
 import Link from "next/link";
+import NextImage from "next/image";
 import { Button } from "@/components/ui/button";
 import { Navbar } from "@/components/Navbar";
-import { AppSidebar } from "@/components/app-sidebar"
-import {
-  SidebarProvider,
-  SidebarInset,
-  SidebarTrigger,
-} from "@/components/ui/sidebar"
+
 
 import { RecipeData } from "@/types";
 
@@ -23,7 +19,8 @@ export default function RecipePage() {
   const [loading, setLoading] = useState(true);
   const [recipe, setRecipe] = useState<RecipeData | null>(null);
   const [error, setError] = useState<string | null>(null);
-
+  const [imageLoading, setImageLoading] = useState(true);
+  
   useEffect(() => {
     const fetchRecipe = async () => {
       if (!query) return;
@@ -31,6 +28,7 @@ export default function RecipePage() {
       try {
         setLoading(true);
         setError(null);
+        setImageLoading(true); // Reset image loading state
         const res = await api.post("/recipe/generate", { food: query });
         
         if (res.data.success) {
@@ -57,7 +55,7 @@ export default function RecipePage() {
     fetchRecipe();
   }, [query]);
 
-  if (!query) return null; // Should ideally show an empty state or redirect
+  if (!query) return null; 
 
   return (
     <main className="min-h-screen bg-[#FDFBF7] pb-20">
@@ -100,11 +98,21 @@ export default function RecipePage() {
                 </Link>
 
                 {/* Dynamic Hero Image */}
-                <div className="relative w-full h-[300px] md:h-[400px] mb-8 rounded-3xl overflow-hidden shadow-lg group">
-                  <img
-                    src={`https://image.pollinations.ai/prompt/delicious ${query} dish professional food photography cinematic lighting?width=1280&height=720&nologo=true&model=flux`}
+                <div className="relative w-full h-[300px] md:h-[400px] mb-8 rounded-3xl overflow-hidden shadow-lg group bg-gray-100">
+                  {imageLoading && (
+                    <div className="absolute inset-0 bg-gray-200 animate-pulse flex items-center justify-center">
+                      <Loader2 className="w-8 h-8 text-[#AA4D4D]/40 animate-spin" />
+                    </div>
+                  )}
+                  <NextImage
+                    src={`https://image.pollinations.ai/prompt/delicious ${query} dish professional food photography cinematic lighting?width=1280&height=720&nologo=true&seed=${Math.floor(Math.random() * 1000)}&model=flux`}
                     alt={recipe.name}
-                    className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-700"
+                    fill
+                    priority
+                    unoptimized
+                    onLoad={() => setImageLoading(false)}
+                    className={`object-cover transition-all duration-700 group-hover:scale-105 ${imageLoading ? 'opacity-0' : 'opacity-100'}`}
+                    sizes="(max-width: 768px) 100vw, 1280px"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
                   <div className="absolute bottom-0 left-0 p-8">
