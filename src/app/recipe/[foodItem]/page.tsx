@@ -7,6 +7,12 @@ import { Loader2, ChefHat, ArrowLeft, Clock, Flame, BarChart } from "lucide-reac
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Navbar } from "@/components/Navbar";
+import { AppSidebar } from "@/components/app-sidebar"
+import {
+  SidebarProvider,
+  SidebarInset,
+  SidebarTrigger,
+} from "@/components/ui/sidebar"
 
 // Define the interface for the structured recipe
 interface RecipeData {

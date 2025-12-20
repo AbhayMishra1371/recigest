@@ -106,7 +106,7 @@ const HeroSection = () => {
             />
 
             <Button 
-                variant="snap" 
+                variant="default" 
                 size="lg" 
                 className="rounded-full gap-2"
                 onClick={() => handleSearch(query)}

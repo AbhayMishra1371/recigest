@@ -16,6 +16,12 @@ export async function POST(req: Request) {
                 { status: 400 }
               );
         }
+         if (!user.password) {
+      return NextResponse.json(
+        { success: false, error: "Account uses Google sign-in only" },
+        { status: 400 }
+      );
+    }
         const isPasswordValid = await bcrypt.compare(password, user.password);
         if(!isPasswordValid){
             return NextResponse.json(
