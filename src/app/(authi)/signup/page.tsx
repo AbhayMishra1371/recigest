@@ -9,6 +9,8 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Leaf } from "lucide-react"
 
+import { toast } from "sonner"
+
 export default function SignUpPage() {
 const [form, setForm] = useState({ name: "", email: "", password: "",confirmPassword:"" });
   const [loading, setLoading] = useState(false);
@@ -19,12 +21,12 @@ const [form, setForm] = useState({ name: "", email: "", password: "",confirmPass
 
     try {
       if (form.password !== form.confirmPassword) {
-        alert("Passwords do not match");
+        toast.error("Passwords do not match");
         setLoading(false);
         return;
       }
       const res = await api.post("/auth/signup", form);
-      alert(res.data.message);
+      toast.success(res.data.message || "Account created successfully");
 
       if (res.data.success) {
         window.location.href = "/";
@@ -32,9 +34,9 @@ const [form, setForm] = useState({ name: "", email: "", password: "",confirmPass
     } catch (err: unknown) {
       if (typeof err === "object" && err !== null && "response" in err) {
          const apiError = err as { response: { data: { error: string } } };
-         alert(apiError.response?.data?.error || "Signup failed");
+         toast.error(apiError.response?.data?.error || "Signup failed");
       } else {
-         alert("Signup failed");
+         toast.error("Signup failed");
       }
     }
 
