@@ -84,7 +84,7 @@ const HeroSection = () => {
         {/* Glass Search Bar */}
         <div className="w-full relative" ref={wrapperRef}>
             <div className="w-full flex items-center gap-3 
-                bg-white/20 backdrop-blur-xl 
+                bg-white/60 backdrop-blur-xl 
                 rounded-full shadow-2xl 
                 p-2 pl-5 border border-white/30
                 animate-slide-up relative z-20">
@@ -108,7 +108,7 @@ const HeroSection = () => {
             <Button 
                 variant="default" 
                 size="lg" 
-                className="rounded-full gap-2"
+                className="bg-[#AA4D4D] h-14 text-white hover:bg-[#AA4D4D]/80 rounded-full gap-2"
                 onClick={() => handleSearch(query)}
             >
                 <Camera className="w-5 h-5" />
