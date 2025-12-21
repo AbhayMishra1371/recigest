@@ -29,7 +29,7 @@ const RecipeSchema: Schema<IRecipe> = new Schema(
     user: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
-      required: true, // ONLY logged in users can save recipes
+      required: true, 
     },
 
     name: { type: String, required: true },

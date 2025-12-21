@@ -8,6 +8,16 @@ import { useEffect, useState } from "react";
 import api from "@/lib/axios";
 
 import { User } from "@/types";
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuLabel,
+    DropdownMenuSeparator,
+    DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { User as UserIcon, LogOut } from "lucide-react";
 
 export function Navbar() {
   const [user, setUser] = useState<User | null>(null);
@@ -21,6 +31,12 @@ export function Navbar() {
       })
       .catch(() => {});
   }, []);
+
+  const handleLogout = async () => {
+    await api.post("/auth/logout");
+    setUser(null);      
+    window.location.href = "/";
+  };
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 px-6 py-6">
@@ -43,22 +59,38 @@ export function Navbar() {
 
         <div className="flex items-center gap-6">
           {user ? (
-              <>
-    <span className="font-bold text-[#3D4A3E]">
-      {user.name}
-    </span>
-
-    <button
-      className="bg-[#AA4D4D] text-white px-4 py-2 rounded-full hover:bg-[#AA4D4D]/80"
-      onClick={async () => {
-        await api.post("/auth/logout");
-        setUser(null);      
-        window.location.href = "/"; 
-      }}
-    >
-      Logout
-    </button>
-            </>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <div className="flex items-center gap-3 cursor-pointer outline-none">
+                  <span className="font-bold text-[#3D4A3E] hidden sm:inline">
+                    {user.name}
+                  </span>
+                  <Avatar className="h-9 w-9 border-2 border-[#5A7C5E]/20">
+                    <AvatarImage src={user.image || ""} alt={user.name} />
+                    <AvatarFallback className="bg-[#5A7C5E] text-white">
+                      {user.name.charAt(0).toUpperCase()}
+                    </AvatarFallback>
+                  </Avatar>
+                </div>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-56 mt-2">
+                <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <Link href="/profile">
+                  <DropdownMenuItem className="cursor-pointer">
+                    <UserIcon className="mr-2 h-4 w-4" />
+                    <span>Profile</span>
+                  </DropdownMenuItem>
+                </Link>
+                <DropdownMenuItem 
+                  className="cursor-pointer text-red-600 focus:text-red-600 focus:bg-red-50"
+                  onClick={handleLogout}
+                >
+                  <LogOut className="mr-2 h-4 w-4" />
+                  <span>Logout</span>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           ) : (
             <>
               <Link href="/signin" className="text-[#3D4A3E] font-bold">
