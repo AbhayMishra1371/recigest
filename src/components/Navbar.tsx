@@ -66,7 +66,7 @@ export function Navbar() {
                     {user.name}
                   </span>
                   <Avatar className="h-9 w-9 border-2 border-[#5A7C5E]/20">
-                    <AvatarImage src={user.image || ""} alt={user.name} />
+                    <AvatarImage src={""} alt={user.name} />
                     <AvatarFallback className="bg-[#5A7C5E] text-white">
                       {user.name.charAt(0).toUpperCase()}
                     </AvatarFallback>
