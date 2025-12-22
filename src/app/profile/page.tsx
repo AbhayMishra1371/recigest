@@ -51,7 +51,7 @@ export default function ProfilePage() {
       await api.post("/auth/logout")
       toast.success("Successfully logged out")
       router.push("/")
-      // Force a refresh to update the navbar state if not using a global state manager
+     
       window.location.reload()
     } catch (error) {
       toast.error("Logout failed")
