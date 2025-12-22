@@ -17,7 +17,7 @@ const HeroSection = () => {
   const router = useRouter();
 
   useEffect(() => {
-    // Check authentication status
+    
     api.get("/auth/curruser")
       .then(res => setIsAuthenticated(!!res.data.authenticated))
       .catch(() => setIsAuthenticated(false));
@@ -46,7 +46,7 @@ const HeroSection = () => {
       } catch (error) {
         console.error("Error fetching suggestions:", error);
       }
-    }, 300); // 300ms debounce
+    }, 300); 
 
     return () => clearTimeout(timer);
   }, [query]);
@@ -61,14 +61,14 @@ const HeroSection = () => {
     }
 
     setShowSuggestions(false);
-    setQuery(searchQuery); // Update state to show what was clicked
-    // Redirect to dynamic route /recipe/[foodItem]
+    setQuery(searchQuery); 
+    
     router.push(`/recipe/${encodeURIComponent(searchQuery)}`);
   };
 
   const handleSuggestionClick = (suggestion: string) => {
     handleSearch(suggestion);
-    // Optional: Trigger search immediately or just fill input
+   
   };
   
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -80,7 +80,7 @@ const HeroSection = () => {
   return (
     <section className="relative min-h-[500px] flex items-center justify-center overflow-hidden bg-cover bg-center">
       
-      {/* Background Image */}
+     
       <Image
         src="/assets/hero-kitchen.jpg"
         alt="Hero Kitchen"
