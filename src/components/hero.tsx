@@ -6,16 +6,23 @@ import Image from "next/image";
 import { useState, useEffect, useRef } from "react";
 import api from "@/lib/axios";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 const HeroSection = () => {
   const [query, setQuery] = useState("");
   const [suggestions, setSuggestions] = useState<string[]>([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
   const wrapperRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
 
   useEffect(() => {
-    // Click outside to close suggestions
+    // Check authentication status
+    api.get("/auth/curruser")
+      .then(res => setIsAuthenticated(!!res.data.authenticated))
+      .catch(() => setIsAuthenticated(false));
+
+  
     function handleClickOutside(event: MouseEvent) {
       if (wrapperRef.current && !wrapperRef.current.contains(event.target as Node)) {
         setShowSuggestions(false);
@@ -46,6 +53,13 @@ const HeroSection = () => {
 
   const handleSearch = (searchQuery: string) => {
     if (!searchQuery || searchQuery.trim().length === 0) return;
+
+    if (isAuthenticated === false) {
+      toast.error("Please sign in to search for recipes");
+      router.push("/signin");
+      return;
+    }
+
     setShowSuggestions(false);
     setQuery(searchQuery); // Update state to show what was clicked
     // Redirect to dynamic route /recipe/[foodItem]
