@@ -1,6 +1,7 @@
 import { Navbar } from "@/components/Navbar"
 import HeroSection  from "@/components/Hero"
 import { TrendingDishes } from "@/components/TrendingDishes"
+import { Footer } from "@/components/Footer"
 
 export default function Home() {
   return (
@@ -8,6 +9,7 @@ export default function Home() {
        <Navbar />
       <HeroSection />
       <TrendingDishes />
+      <Footer />
     </main>
   )
 }
