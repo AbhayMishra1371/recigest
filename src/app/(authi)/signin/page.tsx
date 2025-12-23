@@ -10,6 +10,7 @@ import { Label } from "@/components/ui/label"
 import { Leaf } from "lucide-react"
 import { toast } from "sonner"
 import { useRouter } from "next/navigation"
+import { signinSchema } from "@/lib/validations/auth";
 
 export default function SignInPage() {
  const router = useRouter()
@@ -23,6 +24,13 @@ export default function SignInPage() {
     setLoading(true)
 
     try {
+      const validation = signinSchema.safeParse({ email, password });
+      if (!validation.success) {
+        toast.error(validation.error.issues[0].message);
+        setLoading(false);
+        return;
+      }
+
       const res = await api.post("/auth/signin", { email, password })
 
       if (res.data.success) {

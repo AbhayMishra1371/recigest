@@ -3,6 +3,7 @@ import { getUserFromToken } from "@/lib/auth";
 import { generateRecipeWithGemini } from "@/lib/generate";
 import { ratelimit } from "@/lib/rateLimit";
 import redis from "@/lib/redis";
+import { recipeGenerateSchema } from "@/lib/validations/recipe";
 
 export async function POST(req: Request) {
   try {
@@ -26,14 +27,20 @@ export async function POST(req: Request) {
       );
     }
 
-    const { food } = await req.json();
+    const body = await req.json();
+    const validation = recipeGenerateSchema.safeParse(body);
 
-    if (!food || food.trim().length === 0) {
+    if (!validation.success) {
       return NextResponse.json(
-        { success: false, error: "Food item is required" },
+        { 
+          success: false, 
+          error: validation.error.issues[0].message 
+        },
         { status: 400 }
       );
     }
+
+    const { food } = validation.data;
 
     // Redis Caching (Upstash)
     // bumped version to recipe_json to invalidate old text-only cache

@@ -3,12 +3,26 @@ import { connectDB } from "@/lib/dbConnect";
 import User from "@/models/users";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import { signupSchema } from "@/lib/validations/auth";
 
 export async function POST(req: Request) {
   try {
     await connectDB();
 
-    const { name, email, password } = await req.json();
+    const body = await req.json();
+    const validation = signupSchema.safeParse(body);
+
+    if (!validation.success) {
+      return NextResponse.json(
+        { 
+          success: false, 
+          error: validation.error.issues[0].message 
+        },
+        { status: 400 }
+      );
+    }
+
+    const { name, email, password } = validation.data;
 
     const existingUser = await User.findOne({ email });
     if (existingUser) {

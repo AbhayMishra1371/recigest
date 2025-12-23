@@ -10,6 +10,7 @@ import { Label } from "@/components/ui/label"
 import { Leaf } from "lucide-react"
 
 import { toast } from "sonner"
+import { signupSchema } from "@/lib/validations/auth";
 
 export default function SignUpPage() {
 const [form, setForm] = useState({ name: "", email: "", password: "",confirmPassword:"" });
@@ -20,11 +21,13 @@ const [form, setForm] = useState({ name: "", email: "", password: "",confirmPass
     setLoading(true);
 
     try {
-      if (form.password !== form.confirmPassword) {
-        toast.error("Passwords do not match");
+      const validation = signupSchema.safeParse(form);
+      if (!validation.success) {
+        toast.error(validation.error.issues[0].message);
         setLoading(false);
         return;
       }
+      
       const res = await api.post("/auth/signup", form);
       toast.success(res.data.message || "Account created successfully");
 
