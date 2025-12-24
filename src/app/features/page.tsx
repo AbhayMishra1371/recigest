@@ -4,6 +4,8 @@ import { Navbar } from "@/components/Navbar"
 import { Sparkles, MessageSquare, ChefHat, Zap, Clock, Search } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
+import { useEffect, useState } from "react"
+import api from "@/lib/axios"
 
 import Image from "next/image"
 
@@ -43,6 +45,17 @@ const features = [
 ]
 
 export default function FeaturesPage() {
+  const [isAuth, setIsAuth] = useState(false);
+
+  useEffect(() => {
+    api.get("/auth/curruser")
+      .then(res => {
+        if (res.data.authenticated) {
+          setIsAuth(true);
+        }
+      })
+      .catch(() => {});
+  }, []);
   return (
     <main className="min-h-screen bg-[#FDFBF7]">
       <Navbar />
@@ -122,7 +135,7 @@ export default function FeaturesPage() {
           <p className="text-gray-600 mb-8 max-w-xl mx-auto">
             Join thousands of users who are transforming their leftovers into gourmet meals with Recigest.
           </p>
-          <Link href="/signup">
+          <Link href={isAuth ? "/" : "/signup"}>
             <Button size="lg" className="bg-[#AA4D4D] hover:bg-[#823131] text-white rounded-full px-10 py-7 h-auto text-xl">
               Get Started for Free
             </Button>
