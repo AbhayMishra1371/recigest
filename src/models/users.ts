@@ -5,6 +5,7 @@ export interface IUser extends Document {
   email: string;
   password?: string;  
   provider: "local" | "google";
+  isPrivate: boolean;
 }
 
 const UserSchema: Schema<IUser> = new Schema(
@@ -36,6 +37,10 @@ const UserSchema: Schema<IUser> = new Schema(
       type: String,
       enum: ["local", "google"],
       default: "local",
+    },
+    isPrivate: {
+      type: Boolean,
+      default: false,
     },
   },
   { timestamps: true }

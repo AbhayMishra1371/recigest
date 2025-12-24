@@ -2,6 +2,7 @@ export interface User {
   userId?: string;
   name: string;
   email: string;
+  isPrivate?: boolean;
 }
 
 export interface RecipeData {

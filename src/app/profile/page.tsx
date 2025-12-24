@@ -23,6 +23,8 @@ import { toast } from "sonner"
 export default function ProfilePage() {
   const [user, setUser] = useState<User | null>(null)
   const [loading, setLoading] = useState(true)
+  const [isPrivate, setIsPrivate] = useState(false)
+  const [saving, setSaving] = useState(false)
   const router = useRouter()
 
   useEffect(() => {
@@ -31,6 +33,7 @@ export default function ProfilePage() {
         const res = await api.get("/auth/curruser")
         if (res.data.authenticated) {
           setUser(res.data.user)
+          setIsPrivate(res.data.user.isPrivate || false)
         } else {
           router.push("/signin")
         }
@@ -55,6 +58,24 @@ export default function ProfilePage() {
       window.location.reload()
     } catch (error) {
       toast.error("Logout failed")
+    }
+  }
+
+  const handleSaveChanges = async () => {
+    setSaving(true)
+    try {
+      const res = await api.post("/profile/update", { isPrivate })
+      if (res.data.success) {
+        toast.success("Profile updated successfully")
+        setUser({ ...user!, isPrivate: res.data.user.isPrivate })
+      } else {
+        toast.error(res.data.error || "Failed to update profile")
+      }
+    } catch (error) {
+      console.error("Save changes failed:", error)
+      toast.error("An error occurred while saving changes")
+    } finally {
+      setSaving(false)
     }
   }
 
@@ -168,13 +189,29 @@ export default function ProfilePage() {
                         <ShieldCheck className="w-5 h-5 text-[#5A7C5E]" />
                       </div>
                       <div>
-                        <p className="font-bold text-[#3D4A3E]">Account Security</p>
-                        <p className="text-sm text-gray-500">Your account is secured with two-factor authentication.</p>
+                        <p className="font-bold text-[#3D4A3E]">Account Privacy</p>
+                        <p className="text-sm text-gray-500">
+                          {isPrivate ? "Your account is currently private." : "Your account is currently public."}
+                        </p>
                       </div>
                     </div>
-                    <Button variant="outline" size="sm" className="border-[#5A7C5E] text-[#5A7C5E] hover:bg-[#5A7C5E] hover:text-white">
-                      Manage
-                    </Button>
+                    <div className="flex items-center gap-2">
+                      <span className={`text-xs font-bold uppercase tracking-wider ${isPrivate ? "text-[#AA4D4D]" : "text-[#5A7C5E]"}`}>
+                        {isPrivate ? "Private" : "Public"}
+                      </span>
+                      <button
+                        onClick={() => setIsPrivate(!isPrivate)}
+                        className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none ${
+                          isPrivate ? "bg-[#AA4D4D]" : "bg-gray-200"
+                        }`}
+                      >
+                        <span
+                          className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+                            isPrivate ? "translate-x-6" : "translate-x-1"
+                          }`}
+                        />
+                      </button>
+                    </div>
                   </div>
 
                   <div className="flex items-center justify-between p-4 bg-[#F5F3EE]/50 rounded-xl">
@@ -193,8 +230,14 @@ export default function ProfilePage() {
             </Card>
 
             <div className="flex justify-end gap-4">
-              <Button variant="outline" className="border-gray-200 text-gray-600">Cancel</Button>
-              <Button className="bg-[#AA4D4D] text-white hover:bg-[#913D3D] px-8">Save Changes</Button>
+              <Button variant="outline" className="border-gray-200 text-gray-600" disabled={saving}>Cancel</Button>
+              <Button 
+                className="bg-[#AA4D4D] text-white hover:bg-[#913D3D] px-8" 
+                onClick={handleSaveChanges}
+                disabled={saving}
+              >
+                {saving ? "Saving..." : "Save Changes"}
+              </Button>
             </div>
           </div>
         </div>
