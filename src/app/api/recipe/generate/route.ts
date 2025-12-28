@@ -71,6 +71,15 @@ export async function POST(req: Request) {
     if (result.recipe) {
         // Upstash redis.set supports options as third arg, less than 24h cache is safer for testing
         await redis.set(cacheKey, result.recipe, { ex: 3600 * 24 });
+
+        // Save to user history
+        const historyKey = `history:${user.userId}`;
+        const foodItem = food.trim();
+        
+        // Remove existing occurrence to ensure uniqueness and move to front
+        await redis.lrem(historyKey, 0, foodItem);
+        await redis.lpush(historyKey, foodItem);
+        await redis.ltrim(historyKey, 0, 4); // Keep only 5 most recent unique items
     }
 
     return NextResponse.json({

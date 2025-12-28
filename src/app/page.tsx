@@ -2,7 +2,7 @@
 
 import { Navbar } from "@/components/Navbar"
 import HeroSection  from "@/components/Hero"
-import { TrendingDishes } from "@/components/TrendingDishes"
+import { RecentSearches } from "@/components/RecentSearches"
 import { Footer } from "@/components/Footer"
 import { useEffect, useState } from "react"
 import api from "@/lib/axios"
@@ -33,7 +33,7 @@ export default function Home() {
       <HeroSection />
       
       {isAuthenticated === true && (
-        <TrendingDishes />
+        <RecentSearches />
       )}
 
       {isAuthenticated === false && (
