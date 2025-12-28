@@ -150,7 +150,7 @@ const HeroSection = () => {
         ) : (
           isAuthenticated === false && (
             <div className="animate-slide-up flex flex-col items-center gap-8 text-center max-w-4xl">
-              <h1 className="text-5xl md:text-7xl font-black text-[#3D4A3E] leading-[1.1] tracking-tight">
+              <h1 className="text-5xl mt-16 md:text-7xl font-black text-[#3D4A3E] leading-[1.1] tracking-tight">
                 Turn Your Leftovers Into <span className="text-[#AA4D4D]">Gourmet Meals</span> with AI
               </h1>
               <p className="text-xl md:text-2xl text-gray-700 font-medium max-w-2xl mx-auto">
@@ -161,7 +161,7 @@ const HeroSection = () => {
                   size="lg" 
                   className="bg-[#AA4D4D] text-white rounded-full px-12 py-8 text-2xl font-bold hover:bg-[#AA4D4D]/90 shadow-2xl transition-all hover:scale-105 active:scale-95"
                 >
-                  🚀 Get Started for Free
+                 Get Started for Free
                 </Button>
               </Link>
             </div>
