@@ -149,23 +149,31 @@ const HeroSection = () => {
           </div>
         ) : (
           isAuthenticated === false && (
-            <div className="animate-slide-up flex flex-col items-center gap-6">
+            <div className="animate-slide-up flex flex-col items-center gap-8 text-center max-w-4xl">
+              <h1 className="text-5xl md:text-7xl font-black text-[#3D4A3E] leading-[1.1] tracking-tight">
+                Turn Your Leftovers Into <span className="text-[#AA4D4D]">Gourmet Meals</span> with AI
+              </h1>
+              <p className="text-xl md:text-2xl text-gray-700 font-medium max-w-2xl mx-auto">
+                The smartest way to cook. Simply list your ingredients and let our AI chef do the rest.
+              </p>
               <Link href="/signup">
                 <Button 
                   size="lg" 
-                  className="bg-[#AA4D4D] text-white rounded-full px-10 py-7 text-xl font-bold hover:bg-[#AA4D4D]/90 shadow-xl transition-all hover:scale-105 active:scale-95"
+                  className="bg-[#AA4D4D] text-white rounded-full px-12 py-8 text-2xl font-bold hover:bg-[#AA4D4D]/90 shadow-2xl transition-all hover:scale-105 active:scale-95"
                 >
-                  Get Started
+                  🚀 Get Started for Free
                 </Button>
               </Link>
             </div>
           )
         )}
 
-        {/* Tagline */}
-        <p className="text-lg text-black/90 text-center font-medium animate-fade-in">
-          Our AI chef turns what you have into meals you'll love.
-        </p>
+        {/* Tagline - Only show for authenticated users or hide if redundant */}
+        {isAuthenticated === true && (
+          <p className="text-lg text-black/90 text-center font-medium animate-fade-in">
+            Our AI chef turns what you have into meals you'll love.
+          </p>
+        )}
 
       </div>
     </section>
