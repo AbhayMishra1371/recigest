@@ -105,7 +105,7 @@ export default function RecipePage() {
                     </div>
                   )}
                   <NextImage
-                    src={`https://image.pollinations.ai/prompt/delicious ${query} dish professional food photography cinematic lighting?width=1280&height=720&nologo=true&seed=${Math.floor(Math.random() * 1000)}&model=flux`}
+                    src={`https://image.pollinations.ai/prompt/delicious ${query} dish professional food photography cinematic lighting?width=1280&height=720&nologo=true&seed=${Array.from(query).reduce((acc, char) => acc + char.charCodeAt(0), 0)}&model=flux`}
                     alt={recipe.name}
                     fill
                     priority

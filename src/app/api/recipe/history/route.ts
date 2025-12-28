@@ -13,7 +13,16 @@ export async function GET() {
     }
 
     const historyKey = `history:${user.userId}`;
-    const history = await redis.lrange(historyKey, 0, 4);
+    const rawHistory = await redis.lrange(historyKey, 0, 4);
+
+    const history = rawHistory.map(entry => {
+      try {
+        return typeof entry === 'string' ? JSON.parse(entry) : entry;
+      } catch {
+        // Fallback for old string-only entries
+        return { food: entry, image: null };
+      }
+    });
 
     return NextResponse.json({
       success: true,

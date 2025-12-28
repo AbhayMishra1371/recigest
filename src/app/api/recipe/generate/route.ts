@@ -80,6 +80,38 @@ export async function POST(req: Request) {
         await redis.lrem(historyKey, 0, foodItem);
         await redis.lpush(historyKey, foodItem);
         await redis.ltrim(historyKey, 0, 4); // Keep only 5 most recent unique items
+          // Generate a deterministic image URL for history/cache
+        const deterministicSeed = Array.from(foodItem).reduce((acc, char) => acc + char.charCodeAt(0), 0);
+        const imageUrl = `https://image.pollinations.ai/prompt/delicious ${foodItem} dish professional food photography cinematic lighting?width=1280&height=720&nologo=true&seed=${deterministicSeed}&model=flux`;
+
+        const historyEntry = JSON.stringify({
+            food: foodItem,
+            image: imageUrl
+        });
+        
+        // Remove existing occurrence (regardless of if it was string or JSON) 
+        // We'll handle cleanup by checking the list later or just relying on LREM matching
+        await redis.lrem(historyKey, 0, foodItem); // Remove old string format if exists
+        
+        // This is a bit tricky since we don't know the exact JSON string for removal if it exists
+        // Let's fetch the list, filter, and rewrite, or just accept some duplicates for now
+        // Better way: remove any entry where entry.food === foodItem
+        const existingHistory = await redis.lrange(historyKey, 0, -1);
+        for (const entry of existingHistory) {
+            try {
+                const parsed = JSON.parse(entry as string);
+                if (parsed.food === foodItem) {
+                    await redis.lrem(historyKey, 0, entry);
+                }
+            } catch {
+                if (entry === foodItem) {
+                    await redis.lrem(historyKey, 0, entry);
+                }
+            }
+        }
+
+        await redis.lpush(historyKey, historyEntry);
+        await redis.ltrim(historyKey, 0, 4);
     }
 
     return NextResponse.json({

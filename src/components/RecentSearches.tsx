@@ -6,7 +6,7 @@ import { History, ArrowRight, Search, Loader2 } from "lucide-react";
 import Link from "next/link";
 
 export function RecentSearches() {
-  const [history, setHistory] = useState<string[]>([]);
+  const [history, setHistory] = useState<{food: string, image: string | null}[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -54,18 +54,39 @@ export function RecentSearches() {
         {history.map((item, idx) => (
           <Link 
             key={idx} 
-            href={`/recipe/${encodeURIComponent(item)}`}
-            className="group bg-white p-6 rounded-3xl shadow-sm border border-[#F5F3EE] hover:border-[#AA4D4D]/30 transition-all hover:shadow-md flex flex-col justify-between h-40"
+            href={`/recipe/${encodeURIComponent(item.food)}`}
+            className="group relative h-48 rounded-[2.5rem] overflow-hidden shadow-sm border border-[#F5F3EE] hover:border-[#AA4D4D]/30 transition-all hover:shadow-xl hover:-translate-y-1"
           >
-            <div>
-                <Search className="w-5 h-5 text-gray-300 mb-4 group-hover:text-[#AA4D4D] transition-colors" />
-                <h3 className="font-bold text-[#3D4A3E] text-lg leading-tight line-clamp-2">
-                    {item}
-                </h3>
-            </div>
-            <div className="flex items-center gap-2 text-[#AA4D4D] font-medium text-sm opacity-0 group-hover:opacity-100 transition-opacity">
-                <span>View Recipe</span>
-                <ArrowRight className="w-4 h-4" />
+            {/* Background Image */}
+            {item.image ? (
+                <div className="absolute inset-0 z-0">
+                    <img 
+                        src={item.image} 
+                        alt={item.food} 
+                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+                </div>
+            ) : (
+                <div className="absolute inset-0 bg-[#FDFBF7] z-0 flex items-center justify-center">
+                    <Search className="w-12 h-12 text-gray-100" />
+                </div>
+            )}
+
+            {/* Content */}
+            <div className="relative z-10 p-6 h-full flex flex-col justify-between">
+                <div>
+                   <div className="w-8 h-8 bg-white/20 backdrop-blur-md rounded-full flex items-center justify-center mb-2">
+                        <Search className={`w-4 h-4 ${item.image ? "text-white" : "text-gray-300"}`} />
+                   </div>
+                    <h3 className={`font-bold text-lg leading-tight line-clamp-2 ${item.image ? "text-white" : "text-[#3D4A3E]"}`}>
+                        {item.food}
+                    </h3>
+                </div>
+                <div className="flex items-center gap-2 text-white font-medium text-xs opacity-0 group-hover:opacity-100 transition-opacity">
+                    <span>View Recipe</span>
+                    <ArrowRight className="w-4 h-4" />
+                </div>
             </div>
           </Link>
         ))}
