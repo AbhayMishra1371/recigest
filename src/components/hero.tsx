@@ -7,6 +7,7 @@ import { useState, useEffect, useRef } from "react";
 import api from "@/lib/axios";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import Link from "next/link";
 
 const HeroSection = () => {
   const [query, setQuery] = useState("");
@@ -95,56 +96,71 @@ const HeroSection = () => {
       {/* Content */}
       <div className="relative z-10 w-full max-w-2xl px-4 py-16 flex flex-col items-center gap-8">
 
-        {/* Glass Search Bar */}
-        <div className="w-full relative" ref={wrapperRef}>
+        {/* Glass Search Bar or Get Started Button */}
+        {isAuthenticated === true ? (
+          <div className="w-full relative" ref={wrapperRef}>
             <div className="w-full flex items-center gap-3 
                 bg-white/60 backdrop-blur-xl 
                 rounded-full shadow-2xl 
                 p-2 pl-5 border border-white/30
                 animate-slide-up relative z-20">
 
-            <Search className="w-5 h-5 text-black/80 flex-shrink-0" />
+              <Search className="w-5 h-5 text-black/80 flex-shrink-0" />
 
-            <input
+              <input
                 type="text"
                 value={query}
                 onChange={(e) => {
-                    setQuery(e.target.value);
-                    setShowSuggestions(true);
+                  setQuery(e.target.value);
+                  setShowSuggestions(true);
                 }}
                 onFocus={() => setShowSuggestions(true)}
                 onKeyDown={handleKeyDown}
                 placeholder="What's in your pantry? (e.g., Chicken, Rice...)"
                 className="flex-1 bg-transparent border-none outline-none 
                 text-black placeholder:text-black/70 py-3"
-            />
+              />
 
-            <Button 
-                variant="default" 
-                size="lg" 
+              <Button
+                variant="default"
+                size="lg"
                 className="bg-[#AA4D4D] h-14 text-white hover:bg-[#AA4D4D]/80 rounded-full gap-2"
                 onClick={() => handleSearch(query)}
-            >
+              >
                 <Camera className="w-5 h-5" />
                 <span className="hidden sm:inline">Snap Leftovers</span>
-            </Button>
+              </Button>
             </div>
 
             {/* Suggestions Dropdown */}
             {showSuggestions && suggestions.length > 0 && (
-                <div className="absolute top-full left-0 right-0 mt-2 bg-white/80 backdrop-blur-md rounded-2xl shadow-xl overflow-hidden z-10 border border-white/50">
-                    {suggestions.map((suggestion, index) => (
-                        <div
-                            key={index}
-                            className="px-6 py-3 hover:bg-white/50 cursor-pointer text-[#3D4A3E] font-medium transition-colors"
-                            onClick={() => handleSuggestionClick(suggestion)}
-                        >
-                            {suggestion}
-                        </div>
-                    ))}
-                </div>
+              <div className="absolute top-full left-0 right-0 mt-2 bg-white/80 backdrop-blur-md rounded-2xl shadow-xl overflow-hidden z-10 border border-white/50">
+                {suggestions.map((suggestion, index) => (
+                  <div
+                    key={index}
+                    className="px-6 py-3 hover:bg-white/50 cursor-pointer text-[#3D4A3E] font-medium transition-colors"
+                    onClick={() => handleSuggestionClick(suggestion)}
+                  >
+                    {suggestion}
+                  </div>
+                ))}
+              </div>
             )}
-        </div>
+          </div>
+        ) : (
+          isAuthenticated === false && (
+            <div className="animate-slide-up flex flex-col items-center gap-6">
+              <Link href="/signup">
+                <Button 
+                  size="lg" 
+                  className="bg-[#AA4D4D] text-white rounded-full px-10 py-7 text-xl font-bold hover:bg-[#AA4D4D]/90 shadow-xl transition-all hover:scale-105 active:scale-95"
+                >
+                  Get Started
+                </Button>
+              </Link>
+            </div>
+          )
+        )}
 
         {/* Tagline */}
         <p className="text-lg text-black/90 text-center font-medium animate-fade-in">
