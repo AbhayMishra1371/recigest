@@ -149,8 +149,8 @@ const HeroSection = () => {
           </div>
         ) : (
           isAuthenticated === false && (
-            <div className="animate-slide-up flex flex-col items-center gap-8 text-center max-w-4xl">
-              <h1 className="text-5xl mt-16 md:text-7xl font-black text-[#3D4A3E] leading-[1.1] tracking-tight">
+            <div className="animate-slide-up flex flex-col items-center gap-8 text-center max-w-2xl ">
+              <h1 className="text-5xl mt-16 md:text-7xl font-black text-[#3D4A3E] ">
                 Turn Your Leftovers Into <span className="text-[#AA4D4D]">Gourmet Meals</span> with AI
               </h1>
               <p className="text-xl md:text-2xl text-gray-700 font-medium max-w-2xl mx-auto">
