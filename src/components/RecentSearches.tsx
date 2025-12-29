@@ -22,10 +22,10 @@ export function RecentSearches() {
 
   if (loading) {
     return (
-      <section className="max-w-7xl mx-auto px-6 py-16">
+      <section className="max-w-7xl mx-auto px-6 py-10 md:py-16">
         <div className="flex items-center gap-3 mb-8">
-            <History className="w-6 h-6 text-[#AA4D4D]" />
-            <h2 className="text-3xl font-bold text-[#2C3E3D]">Recent Searches</h2>
+            <History className="w-5 h-5 md:w-6 md:h-6 text-[#AA4D4D]" />
+            <h2 className="text-2xl md:text-3xl font-bold text-[#2C3E3D]">Recent Searches</h2>
         </div>
         <div className="flex items-center gap-2 text-gray-400">
             <Loader2 className="w-5 h-5 animate-spin" />
@@ -43,14 +43,14 @@ export function RecentSearches() {
     <section className="max-w-7xl mx-auto px-6 py-16 animate-fade-in">
       <div className="flex items-center justify-between mb-8">
         <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-[#AA4D4D]/10 rounded-xl flex items-center justify-center">
-                <History className="w-5 h-5 text-[#AA4D4D]" />
+            <div className="w-8 h-8 md:w-10 md:h-10 bg-[#AA4D4D]/10 rounded-xl flex items-center justify-center">
+                <History className="w-4 h-4 md:w-5 md:h-5 text-[#AA4D4D]" />
             </div>
-            <h2 className="text-3xl font-bold text-[#2C3E3D]">Jump Back In</h2>
+            <h2 className="text-2xl md:text-3xl font-bold text-[#2C3E3D]">Jump Back In</h2>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 md:gap-4">
         {history.map((item, idx) => (
           <Link 
             key={idx} 

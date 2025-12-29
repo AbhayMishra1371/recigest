@@ -32,10 +32,10 @@ const trendingRecipes = [
 
 export function TrendingDishes() {
   return (
-    <section className="max-w-7xl mx-auto px-6 py-16 bg-[#F5F3EE]">
-      <h2 className="text-3xl font-bold text-[#2C3E3D] mb-8">Trending Dishes This Week</h2>
+    <section className="max-w-7xl mx-auto px-6 py-10 md:py-16 bg-[#F5F3EE]">
+      <h2 className="text-2xl md:text-3xl font-bold text-[#2C3E3D] mb-8">Trending Dishes This Week</h2>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {trendingRecipes.map((recipe) => (
           <RecipeCard key={recipe.id} recipe={recipe} />
         ))}

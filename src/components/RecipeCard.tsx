@@ -19,7 +19,7 @@ interface RecipeCardProps {
 export function RecipeCard({ recipe }: RecipeCardProps) {
   return (
     <div className="bg-gray-50 rounded-2xl shadow-md hover:shadow-xl transition-shadow overflow-hidden group cursor-pointer">
-      <div className="relative h-64 overflow-hidden">
+      <div className="relative h-48 md:h-64 overflow-hidden">
         <Image
           src={recipe.image || "/placeholder.svg"}
           alt={recipe.title}
@@ -28,8 +28,8 @@ export function RecipeCard({ recipe }: RecipeCardProps) {
         />
       </div>
 
-      <div className="p-5">
-        <h3 className="text-lg font-bold text-[#2C3E3D] mb-3 leading-tight">{recipe.title}</h3>
+      <div className="p-4 md:p-5">
+        <h3 className="text-base md:text-lg font-bold text-[#2C3E3D] mb-3 leading-tight truncate md:whitespace-normal">{recipe.title}</h3>
 
         <div className="flex items-center gap-2 flex-wrap mb-3">
           <Badge variant="secondary" className="bg-[#F5F5F5] text-[#2C3E3D] text-xs font-medium px-2.5 py-1">

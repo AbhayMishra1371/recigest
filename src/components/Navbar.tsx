@@ -17,7 +17,14 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { User as UserIcon, LogOut } from "lucide-react";
+import { User as UserIcon, LogOut, Menu } from "lucide-react";
+import {
+    Sheet,
+    SheetContent,
+    SheetHeader,
+    SheetTitle,
+    SheetTrigger,
+} from "@/components/ui/sheet";
 
 export function Navbar() {
   const [user, setUser] = useState<User | null>(null);
@@ -57,12 +64,12 @@ export function Navbar() {
           <Link href="/community">Community</Link>
         </nav>
 
-        <div className="flex items-center gap-6">
+        <div className="flex items-center gap-4 md:gap-6">
           {user ? (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <div className="flex items-center gap-3 cursor-pointer outline-none">
-                  <span className="font-bold text-[#3D4A3E] hidden sm:inline">
+                  <span className="font-bold text-[#3D4A3E] hidden lg:inline">
                     {user.name}
                   </span>
                   <Avatar className="h-9 w-9 border-2 border-[#5A7C5E]/20">
@@ -92,7 +99,7 @@ export function Navbar() {
               </DropdownMenuContent>
             </DropdownMenu>
           ) : (
-            <>
+            <div className="hidden md:flex items-center gap-6">
               <Link href="/signin" className="text-[#3D4A3E] font-bold">
                 Sign In
               </Link>
@@ -104,8 +111,43 @@ export function Navbar() {
                   Get Started
                 </Button>
               </Link>
-            </>
+            </div>
           )}
+
+          {/* Mobile Menu */}
+          <div className="md:hidden">
+            <Sheet>
+              <SheetTrigger asChild>
+                <Button variant="ghost" size="icon" className="text-[#3D4A3E]">
+                  <Menu className="h-6 w-6" />
+                </Button>
+              </SheetTrigger>
+              <SheetContent side="right" className="w-[300px] sm:w-[400px] bg-[#F5F3EE]">
+                <SheetHeader>
+                  <SheetTitle className="flex items-center gap-2">
+                    <Leaf className="w-5 h-5 text-[#5A7C5E]" />
+                    Recigest
+                  </SheetTitle>
+                </SheetHeader>
+                <nav className="flex flex-col gap-6 mt-10">
+                  <Link href="/" className="text-xl font-medium text-[#3D4A3E]">Home</Link>
+                  <Link href="/features" className="text-xl font-medium text-[#3D4A3E]">Features</Link>
+                  <Link href="/community" className="text-xl font-medium text-[#3D4A3E]">Community</Link>
+                  {!user && (
+                    <div className="flex flex-col gap-4 pt-6 border-t border-[#5A7C5E]/10">
+                      <Link href="/signin" className="text-xl font-medium text-[#3D4A3E]">Sign In</Link>
+                      <Link href="/signup" className="text-xl font-medium text-[#3D4A3E]">Sign Up</Link>
+                      <Link href="/signup">
+                        <Button className="bg-[#AA4D4D] text-white rounded-full w-full py-6 text-lg">
+                          Get Started
+                        </Button>
+                      </Link>
+                    </div>
+                  )}
+                </nav>
+              </SheetContent>
+            </Sheet>
+          </div>
         </div>
       </div>
     </header>

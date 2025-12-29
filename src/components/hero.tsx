@@ -99,13 +99,13 @@ const HeroSection = () => {
         {/* Glass Search Bar or Get Started Button */}
         {isAuthenticated === true ? (
           <div className="w-full relative" ref={wrapperRef}>
-            <div className="w-full flex items-center gap-3 
+            <div className="w-full flex items-center gap-2 sm:gap-3 
                 bg-white/60 backdrop-blur-xl 
                 rounded-full shadow-2xl 
-                p-2 pl-5 border border-white/30
+                p-1.5 sm:p-2 pl-4 sm:pl-5 border border-white/30
                 animate-slide-up relative z-20">
 
-              <Search className="w-5 h-5 text-black/80 flex-shrink-0" />
+              <Search className="w-4 h-4 sm:w-5 sm:h-5 text-black/80 flex-shrink-0" />
 
               <input
                 type="text"
@@ -116,18 +116,18 @@ const HeroSection = () => {
                 }}
                 onFocus={() => setShowSuggestions(true)}
                 onKeyDown={handleKeyDown}
-                placeholder="What's in your pantry? (e.g., Chicken, Rice...)"
+                placeholder="What's in your pantry?"
                 className="flex-1 bg-transparent border-none outline-none 
-                text-black placeholder:text-black/70 py-3"
+                text-black placeholder:text-black/70 py-2 sm:py-3 text-sm sm:text-base"
               />
 
               <Button
                 variant="default"
                 size="lg"
-                className="bg-[#AA4D4D] h-14 text-white hover:bg-[#AA4D4D]/80 rounded-full gap-2"
+                className="bg-[#AA4D4D] h-10 sm:h-14 text-white hover:bg-[#AA4D4D]/80 rounded-full gap-2 px-4 sm:px-6"
                 onClick={() => handleSearch(query)}
               >
-                <Camera className="w-5 h-5" />
+                <Camera className="w-4 h-4 sm:w-5 sm:h-5" />
                 <span className="hidden sm:inline">Snap Leftovers</span>
               </Button>
             </div>
@@ -149,19 +149,19 @@ const HeroSection = () => {
           </div>
         ) : (
           isAuthenticated === false && (
-            <div className="animate-slide-up flex flex-col items-center gap-8 text-center max-w-2xl ">
-              <h1 className="text-5xl mt-16 md:text-7xl font-black text-[#3D4A3E] ">
+            <div className="animate-slide-up flex flex-col items-center gap-6 md:gap-8 text-center max-w-2xl">
+              <h1 className="text-4xl mt-12 md:mt-16 md:text-7xl font-black text-[#3D4A3E] leading-[1.1]">
                 Turn Your Leftovers Into <span className="text-[#AA4D4D]">Gourmet Meals</span> with AI
               </h1>
-              <p className="text-xl md:text-2xl text-gray-700 font-medium max-w-2xl mx-auto">
+              <p className="text-lg md:text-2xl text-gray-700 font-medium max-w-xl mx-auto px-4">
                 The smartest way to cook. Simply list your ingredients and let our AI chef do the rest.
               </p>
               <Link href="/signup">
                 <Button 
                   size="lg" 
-                  className="bg-[#AA4D4D] text-white rounded-full px-12 py-8 text-2xl font-bold hover:bg-[#AA4D4D]/90 shadow-2xl transition-all hover:scale-105 active:scale-95"
+                  className="bg-[#AA4D4D] text-white rounded-full px-8 md:px-12 py-6 md:py-8 text-xl md:text-2xl font-bold hover:bg-[#AA4D4D]/90 shadow-2xl transition-all hover:scale-105 active:scale-95"
                 >
-                 Get Started for Free
+                  Get Started for Free
                 </Button>
               </Link>
             </div>
@@ -171,6 +171,7 @@ const HeroSection = () => {
         {/* Tagline - Only show for authenticated users or hide if redundant */}
         {isAuthenticated === true && (
           <p className="text-lg text-black/90 text-center font-medium animate-fade-in">
+            
             Our AI chef turns what you have into meals you'll love.
           </p>
         )}
