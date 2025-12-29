@@ -66,38 +66,40 @@ export function Navbar() {
 
         <div className="flex items-center gap-4 md:gap-6">
           {user ? (
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <div className="flex items-center gap-3 cursor-pointer outline-none">
-                  <span className="font-bold text-[#3D4A3E] hidden lg:inline">
-                    {user.name}
-                  </span>
-                  <Avatar className="h-9 w-9 border-2 border-[#5A7C5E]/20">
-                    <AvatarImage src={""} alt={user.name} />
-                    <AvatarFallback className="bg-[#5A7C5E] text-white">
-                      {user.name.charAt(0).toUpperCase()}
-                    </AvatarFallback>
-                  </Avatar>
-                </div>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-56 mt-2">
-                <DropdownMenuLabel>My Account</DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <Link href="/profile">
-                  <DropdownMenuItem className="cursor-pointer">
-                    <UserIcon className="mr-2 h-4 w-4" />
-                    <span>Profile</span>
+            <div className="hidden md:block">
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <div className="flex items-center gap-3 cursor-pointer outline-none">
+                    <span className="font-bold text-[#3D4A3E] hidden lg:inline">
+                      {user.name}
+                    </span>
+                    <Avatar className="h-9 w-9 border-2 border-[#5A7C5E]/20">
+                      <AvatarImage src={""} alt={user.name} />
+                      <AvatarFallback className="bg-[#5A7C5E] text-white">
+                        {user.name.charAt(0).toUpperCase()}
+                      </AvatarFallback>
+                    </Avatar>
+                  </div>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-56 mt-2">
+                  <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <Link href="/profile">
+                    <DropdownMenuItem className="cursor-pointer">
+                      <UserIcon className="mr-2 h-4 w-4" />
+                      <span>Profile</span>
+                    </DropdownMenuItem>
+                  </Link>
+                  <DropdownMenuItem 
+                    className="cursor-pointer text-red-600 focus:text-red-600 focus:bg-red-50"
+                    onClick={handleLogout}
+                  >
+                    <LogOut className="mr-2 h-4 w-4" />
+                    <span>Logout</span>
                   </DropdownMenuItem>
-                </Link>
-                <DropdownMenuItem 
-                  className="cursor-pointer text-red-600 focus:text-red-600 focus:bg-red-50"
-                  onClick={handleLogout}
-                >
-                  <LogOut className="mr-2 h-4 w-4" />
-                  <span>Logout</span>
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
           ) : (
             <div className="hidden md:flex items-center gap-6">
               <Link href="/signin" className="text-[#3D4A3E] font-bold">
@@ -133,7 +135,38 @@ export function Navbar() {
                   <Link href="/" className="text-xl font-medium text-[#3D4A3E]">Home</Link>
                   <Link href="/features" className="text-xl font-medium text-[#3D4A3E]">Features</Link>
                   <Link href="/community" className="text-xl font-medium text-[#3D4A3E]">Community</Link>
-                  {!user && (
+                  
+                  {user ? (
+                    <div className="flex flex-col gap-6 pt-6 border-t border-[#5A7C5E]/10">
+                      <div className="flex items-center gap-4 px-2">
+                        <Avatar className="h-12 w-12 border-2 border-[#5A7C5E]/20">
+                          <AvatarImage src={""} alt={user.name} />
+                          <AvatarFallback className="bg-[#5A7C5E] text-white text-lg">
+                            {user.name.charAt(0).toUpperCase()}
+                          </AvatarFallback>
+                        </Avatar>
+                        <div className="flex flex-col">
+                          <span className="font-bold text-[#3D4A3E] text-lg leading-tight">
+                            {user.name}
+                          </span>
+                          <span className="text-[#5A7C5E] text-sm">Chef Enthusiast</span>
+                        </div>
+                      </div>
+                      <div className="flex flex-col gap-4">
+                        <Link href="/profile" className="text-xl font-medium text-[#3D4A3E] flex items-center gap-3">
+                          <UserIcon className="w-5 h-5" />
+                          Profile
+                        </Link>
+                        <button 
+                          onClick={handleLogout}
+                          className="text-xl font-medium text-red-500 flex items-center gap-3 text-left w-full"
+                        >
+                          <LogOut className="w-5 h-5" />
+                          Logout
+                        </button>
+                      </div>
+                    </div>
+                  ) : (
                     <div className="flex flex-col gap-4 pt-6 border-t border-[#5A7C5E]/10">
                       <Link href="/signin" className="text-xl font-medium text-[#3D4A3E]">Sign In</Link>
                       <Link href="/signup" className="text-xl font-medium text-[#3D4A3E]">Sign Up</Link>
