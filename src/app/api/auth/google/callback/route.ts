@@ -4,6 +4,7 @@ import jwt from "jsonwebtoken";
 export async function GET(req: Request) {
   try {
     const url = new URL(req.url);
+    const { origin } = url;
     const code = url.searchParams.get("code");
 
     if (!code) throw new Error("No code returned");
@@ -16,7 +17,7 @@ export async function GET(req: Request) {
         code,
         client_id: process.env.GOOGLE_CLIENT_ID!,
         client_secret: process.env.GOOGLE_CLIENT_SECRET!,
-        redirect_uri: `${process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"}/api/auth/google/callback`,
+        redirect_uri: `${origin}/api/auth/google/callback`,
         grant_type: "authorization_code",
       }),
     });
@@ -39,8 +40,7 @@ export async function GET(req: Request) {
     console.log("PROFILE:", profile);
 
     
-    const appUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
-    const res = NextResponse.redirect(appUrl);
+    const res = NextResponse.redirect(origin);
     
     const token = jwt.sign(
   { name: profile.name, email: profile.email, picture: profile.picture },
