@@ -16,7 +16,7 @@ export async function GET(req: Request) {
         code,
         client_id: process.env.GOOGLE_CLIENT_ID!,
         client_secret: process.env.GOOGLE_CLIENT_SECRET!,
-        redirect_uri: "http://localhost:3000/api/auth/google/callback",
+        redirect_uri: `${process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"}/api/auth/google/callback`,
         grant_type: "authorization_code",
       }),
     });
@@ -39,7 +39,8 @@ export async function GET(req: Request) {
     console.log("PROFILE:", profile);
 
     
-    const res = NextResponse.redirect("http://localhost:3000");
+    const appUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
+    const res = NextResponse.redirect(appUrl);
     
     const token = jwt.sign(
   { name: profile.name, email: profile.email, picture: profile.picture },
