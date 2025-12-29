@@ -93,7 +93,7 @@ export default function ProfilePage() {
   if (!user) return null
 
   return (
-    <div className="min-h-screen bg-[#FDFCFB] pt-32 pb-20 px-6">
+    <div className="min-h-screen bg-[#FDFCFB] pt-24 md:pt-32 pb-12 md:pb-20 px-4 md:px-6">
       <div className="max-w-4xl mx-auto">
         {/* Back Button */}
         <Link 
@@ -109,10 +109,10 @@ export default function ProfilePage() {
           <div className="md:col-span-1 space-y-6">
             <Card className="border-none shadow-xl bg-white/80 backdrop-blur-sm overflow-hidden">
               <div className="h-24 bg-gradient-to-r from-[#5A7C5E] to-[#8BA88E]"></div>
-              <CardContent className="pt-0 -mt-12 flex flex-col items-center">
-                <Avatar className="h-24 w-24 border-4 border-white shadow-lg">
+              <CardContent className="pt-0 -mt-10 md:-mt-12 flex flex-col items-center">
+                <Avatar className="h-20 w-20 md:h-24 md:w-24 border-4 border-white shadow-lg">
                   <AvatarImage src="" />
-                  <AvatarFallback className="bg-[#5A7C5E] text-white text-2xl">
+                  <AvatarFallback className="bg-[#5A7C5E] text-white text-xl md:text-2xl">
                     {user.name?.charAt(0).toUpperCase()}
                   </AvatarFallback>
                 </Avatar>
@@ -183,7 +183,7 @@ export default function ProfilePage() {
                 </div>
 
                 <div className="space-y-4 pt-4">
-                  <div className="flex items-center justify-between p-4 bg-[#F5F3EE]/50 rounded-xl">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between p-4 bg-[#F5F3EE]/50 rounded-xl gap-4">
                     <div className="flex items-center gap-3">
                       <div className="p-2 bg-white rounded-lg shadow-sm">
                         <ShieldCheck className="w-5 h-5 text-[#5A7C5E]" />
@@ -195,7 +195,7 @@ export default function ProfilePage() {
                         </p>
                       </div>
                     </div>
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center justify-between sm:justify-start gap-4 border-t sm:border-t-0 pt-3 sm:pt-0">
                       <span className={`text-xs font-bold uppercase tracking-wider ${isPrivate ? "text-[#AA4D4D]" : "text-[#5A7C5E]"}`}>
                         {isPrivate ? "Private" : "Public"}
                       </span>
@@ -229,10 +229,10 @@ export default function ProfilePage() {
               </CardContent>
             </Card>
 
-            <div className="flex justify-end gap-4">
-              <Button variant="outline" className="border-gray-200 text-gray-600" disabled={saving}>Cancel</Button>
+            <div className="flex flex-col-reverse sm:flex-row justify-end gap-3 sm:gap-4">
+              <Button variant="outline" className="border-gray-200 text-gray-600 w-full sm:w-auto" disabled={saving}>Cancel</Button>
               <Button 
-                className="bg-[#AA4D4D] text-white hover:bg-[#913D3D] px-8" 
+                className="bg-[#AA4D4D] text-white hover:bg-[#913D3D] px-8 w-full sm:w-auto" 
                 onClick={handleSaveChanges}
                 disabled={saving}
               >

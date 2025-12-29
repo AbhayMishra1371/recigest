@@ -60,7 +60,7 @@ export default function RecipePage() {
   return (
     <main className="min-h-screen bg-[#FDFBF7] pb-20">
       <Navbar />
-      <div className="container mx-auto px-4 pt-32">
+      <div className="container mx-auto px-4 pt-24 md:pt-32">
         {loading ? (
           <div className="flex flex-col items-center justify-center min-h-[60vh] gap-6 animate-fade-in">
              <div className="relative">
@@ -114,34 +114,34 @@ export default function RecipePage() {
                     className={`object-cover transition-all duration-700 group-hover:scale-105 ${imageLoading ? 'opacity-0' : 'opacity-100'}`}
                     sizes="(max-width: 768px) 100vw, 1280px"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-                  <div className="absolute bottom-0 left-0 p-8">
-                     <h1 className="text-4xl md:text-5xl font-bold text-white mb-2 leading-tight drop-shadow-md">
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
+                  <div className="absolute bottom-0 left-0 p-4 md:p-8 w-full">
+                     <h1 className="text-3xl md:text-5xl font-bold text-white mb-2 leading-tight drop-shadow-md">
                         {recipe.name}
                     </h1>
-                     <p className="text-lg text-white/90 max-w-2xl leading-relaxed drop-shadow-sm">
+                     <p className="text-sm md:text-lg text-white/90 max-w-2xl leading-relaxed drop-shadow-sm line-clamp-3 md:line-clamp-none">
                         {recipe.description}
                     </p>
                   </div>
                 </div>
 
                 {/* Metrics Row */}
-                <div className="flex flex-wrap gap-4 mt-6">
-                    <div className="flex items-center gap-2 bg-white px-4 py-2 rounded-full shadow-sm border border-[#F5F3EE] text-[#5A7C5E]">
-                        <Clock className="w-4 h-4" />
-                        <span className="font-medium text-sm">{recipe.time?.total || 'N/A'}</span>
+                <div className="flex flex-wrap gap-2 md:gap-4 mt-6">
+                    <div className="flex items-center gap-1.5 md:gap-2 bg-white px-3 md:px-4 py-1.5 md:py-2 rounded-full shadow-sm border border-[#F5F3EE] text-[#5A7C5E]">
+                        <Clock className="w-3.5 h-3.5 md:w-4 md:h-4" />
+                        <span className="font-medium text-xs md:text-sm">{recipe.time?.total || 'N/A'}</span>
                     </div>
-                    <div className="flex items-center gap-2 bg-white px-4 py-2 rounded-full shadow-sm border border-[#F5F3EE] text-[#D97706]">
-                        <Flame className="w-4 h-4" />
-                        <span className="font-medium text-sm">{recipe.calories}</span>
+                    <div className="flex items-center gap-1.5 md:gap-2 bg-white px-3 md:px-4 py-1.5 md:py-2 rounded-full shadow-sm border border-[#F5F3EE] text-[#D97706]">
+                        <Flame className="w-3.5 h-3.5 md:w-4 md:h-4" />
+                        <span className="font-medium text-xs md:text-sm">{recipe.calories}</span>
                     </div>
-                    <div className="flex items-center gap-2 bg-white px-4 py-2 rounded-full shadow-sm border border-[#F5F3EE] text-[#AA4D4D]">
-                        <BarChart className="w-4 h-4" />
-                        <span className="font-medium text-sm">{recipe.difficulty}</span>
+                    <div className="flex items-center gap-1.5 md:gap-2 bg-white px-3 md:px-4 py-1.5 md:py-2 rounded-full shadow-sm border border-[#F5F3EE] text-[#AA4D4D]">
+                        <BarChart className="w-3.5 h-3.5 md:w-4 md:h-4" />
+                        <span className="font-medium text-xs md:text-sm">{recipe.difficulty}</span>
                     </div>
-                     <div className="flex items-center gap-2 bg-white px-4 py-2 rounded-full shadow-sm border border-[#F5F3EE] text-[#2C3E3D]">
-                        <span className="font-bold text-sm">Cuisine:</span>
-                        <span className="font-medium text-sm">{recipe.cuisine}</span>
+                     <div className="flex items-center gap-1.5 md:gap-2 bg-white px-3 md:px-4 py-1.5 md:py-2 rounded-full shadow-sm border border-[#F5F3EE] text-[#2C3E3D]">
+                        <span className="font-bold text-xs md:text-sm">Cuisine:</span>
+                        <span className="font-medium text-xs md:text-sm">{recipe.cuisine}</span>
                     </div>
                 </div>
             </div>
@@ -149,7 +149,7 @@ export default function RecipePage() {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                 {/* Left Column: Ingredients */}
                 <div className="md:col-span-1">
-                    <div className="bg-white/80 backdrop-blur-sm rounded-3xl p-6 shadow-sm border border-[#F5F3EE] sticky top-32">
+                    <div className="bg-white/80 backdrop-blur-sm rounded-3xl p-6 shadow-sm border border-[#F5F3EE] md:sticky md:top-32">
                         <h3 className="text-xl font-bold text-[#3D4A3E] mb-4">Ingredients</h3>
                         <ul className="space-y-3">
                             {recipe.ingredients.map((item, idx) => (
@@ -164,7 +164,7 @@ export default function RecipePage() {
 
                 {/* Right Column: Instructions */}
                 <div className="md:col-span-2 space-y-6">
-                    <div className="bg-white/80 backdrop-blur-sm rounded-3xl p-8 shadow-sm border border-[#F5F3EE]">
+                    <div className="bg-white/80 backdrop-blur-sm rounded-3xl p-6 md:p-8 shadow-sm border border-[#F5F3EE]">
                          <h3 className="text-xl font-bold text-[#3D4A3E] mb-6">Instructions</h3>
                          <div className="space-y-8">
                             {recipe.instructions.map((step, idx) => (
