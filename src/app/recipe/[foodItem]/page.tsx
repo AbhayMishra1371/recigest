@@ -35,10 +35,22 @@ export default function RecipePage() {
             // Redis cache might return an object, while fresh API returns string
             // Handle both cases to prevent crashes
             let jsonRecipe;
-            if (typeof res.data.recipe === 'string') {
-                 jsonRecipe = JSON.parse(res.data.recipe);
-            } else {
-                 jsonRecipe = res.data.recipe;
+            try {
+              if (typeof res.data.recipe === 'string') {
+                  // Attempt to clean up common LLM issues (markdown blocks, leading/trailing junk)
+                  const cleanJson = res.data.recipe
+                    .replace(/```json/g, "")
+                    .replace(/```/g, "")
+                    .trim();
+                  jsonRecipe = JSON.parse(cleanJson);
+              } else {
+                  jsonRecipe = res.data.recipe;
+              }
+            } catch (parseError) {
+              console.error("JSON Parse Error:", parseError, res.data.recipe);
+              setError("The chef's handwriting was a bit messy. Please try generating again.");
+              setLoading(false);
+              return;
             }
             setRecipe(jsonRecipe);
         } else {

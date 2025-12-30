@@ -16,7 +16,10 @@ export class RecipeService {
 
      
       const model = genAI.getGenerativeModel({
-        model: "gemini-2.5-flash",
+        model: "gemini-1.5-flash",
+        generationConfig: {
+          responseMimeType: "application/json",
+        },
       });
 
       const prompt = `
@@ -67,7 +70,16 @@ Rules:
 
       const result = await model.generateContent(prompt);
       const response = result.response;
+      
+      if (!response || !response.candidates || response.candidates.length === 0) {
+        throw new Error("No recipe was generated. The chef might be busy or the request was filtered.");
+      }
+
       let recipeText = response.text();
+      
+      if (!recipeText) {
+        throw new Error("The chef returned an empty plate. Please try a different dish.");
+      }
       
       // Clean up potential markdown formatting
       recipeText = recipeText.replace(/```json/g, "").replace(/```/g, "").trim();

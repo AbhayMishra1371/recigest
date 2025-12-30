@@ -76,11 +76,10 @@ export async function POST(req: Request) {
         const historyKey = `history:${user.userId}`;
         const foodItem = food.trim();
         
-        // Remove existing occurrence to ensure uniqueness and move to front
-        await redis.lrem(historyKey, 0, foodItem);
-        await redis.lpush(historyKey, foodItem);
-        await redis.ltrim(historyKey, 0, 4); // Keep only 5 most recent unique items
-          // Generate a deterministic image URL for history/cache
+        // Deduplicate and update history
+
+        
+        // Generate a deterministic image URL for history
         const deterministicSeed = Array.from(foodItem).reduce((acc, char) => acc + char.charCodeAt(0), 0);
         const imageUrl = `https://image.pollinations.ai/prompt/delicious ${foodItem} dish professional food photography cinematic lighting?width=1280&height=720&nologo=true&seed=${deterministicSeed}&model=flux`;
 
@@ -89,29 +88,29 @@ export async function POST(req: Request) {
             image: imageUrl
         });
         
-        // Remove existing occurrence (regardless of if it was string or JSON) 
-        // We'll handle cleanup by checking the list later or just relying on LREM matching
-        await redis.lrem(historyKey, 0, foodItem); // Remove old string format if exists
-        
-        // This is a bit tricky since we don't know the exact JSON string for removal if it exists
-        // Let's fetch the list, filter, and rewrite, or just accept some duplicates for now
-        // Better way: remove any entry where entry.food === foodItem
+        // Fetch existing history to remove duplicates (handles both old string format and new JSON format)
         const existingHistory = await redis.lrange(historyKey, 0, -1);
         for (const entry of existingHistory) {
-            try {
-                const parsed = JSON.parse(entry as string);
-                if (parsed.food === foodItem) {
-                    await redis.lrem(historyKey, 0, entry);
+            let foodInHistory: string | null = null;
+            
+            if (typeof entry === 'string') {
+                try {
+                    const parsed = JSON.parse(entry);
+                    foodInHistory = typeof parsed === 'object' && parsed !== null ? parsed.food : entry;
+                } catch {
+                    foodInHistory = entry;
                 }
-            } catch {
-                if (entry === foodItem) {
-                    await redis.lrem(historyKey, 0, entry);
-                }
+            } else if (typeof entry === 'object' && entry !== null) {
+                foodInHistory = (entry as any).food || null;
+            }
+
+            if (foodInHistory && foodInHistory.toLowerCase() === foodItem.toLowerCase()) {
+                await redis.lrem(historyKey, 0, entry);
             }
         }
 
         await redis.lpush(historyKey, historyEntry);
-        await redis.ltrim(historyKey, 0, 4);
+        await redis.ltrim(historyKey, 0, 4); // Keep only 5 most recent unique items
     }
 
     return NextResponse.json({
@@ -121,10 +120,10 @@ export async function POST(req: Request) {
       isCached: false
     });
 
-  } catch (error) {
+  } catch (error: any) {
     console.error("Recipe Generate API Error:", error);
     return NextResponse.json(
-      { success: false, error: "Internal Server Error" },
+      { success: false, error: error.message || "Internal Server Error" },
       { status: 500 }
     );
   }
