@@ -48,10 +48,14 @@ export async function GET(req: Request) {
   { expiresIn: "7d" }
 );
     
-   res.cookies.set("token", token, {
+  res.cookies.set("token", token, {
   httpOnly: true,
+  secure: process.env.NODE_ENV === "production", 
+  sameSite: "none", 
   path: "/",
+  maxAge: 60 * 60 * 24 * 7,
 });
+
 
     return res;
 
