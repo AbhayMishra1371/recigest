@@ -31,33 +31,8 @@ export const Solution = () => {
                   <Sparkles className="w-5 h-5" />
                 </div>
                 <div>
-                  <h4 className="font-bold text-[#3D4A3E] mb-1">Zero Waste Focus</h4>
+                  <h4 className="font-bold  text-[#3D4A3E] mb-1">Zero Waste Focus</h4>
                   <p className="text-gray-600">Turn your 'leftovers' into gourmet dishes and reduce your environmental footprint.</p>
-                </div>
-              </div>
-            </div>
-          </div>
-          
-          <div className="flex-1 relative">
-            <div className="relative z-10 rounded-[3rem] overflow-hidden shadow-2xl h-[500px]">
-              <Image 
-                src="https://images.unsplash.com/photo-1556910103-1c02745aae4d?auto=format&fit=crop&q=80&w=800" 
-                alt="Cooking illustration" 
-                fill
-                className="object-cover"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#3D4A3E]/40 to-transparent"></div>
-            </div>
-            {/* Decorative elements */}
-            <div className="absolute -top-8 -right-8 w-32 h-32 bg-[#F5F3EE] rounded-full -z-0"></div>
-            <div className="absolute -bottom-10 -left-10 bg-white p-6 rounded-2xl shadow-xl z-20 animate-bounce-slow">
-              <div className="flex items-center gap-3">
-                <div className="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center text-white">
-                  <Clock className="w-6 h-6" />
-                </div>
-                <div>
-                  <p className="text-sm font-bold text-[#3D4A3E]">Cook Time Saved</p>
-                  <p className="text-xs text-gray-500">1.2k hours this month</p>
                 </div>
               </div>
             </div>

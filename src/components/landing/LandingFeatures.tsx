@@ -31,7 +31,7 @@ const features = [
 
 export const LandingFeatures = () => {
   return (
-    <section className="py-24 bg-[#FDFBF7]">
+    <section className="bg-[#FDFBF7]">
       <div className="container mx-auto px-6">
         <div className="text-center mb-16">
           <h2 className="text-4xl font-bold text-[#3D4A3E] mb-4">Powerful Features</h2>

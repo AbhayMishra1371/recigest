@@ -83,7 +83,7 @@ const HeroSection = () => {
       
      
       <Image
-        src="/assets/hero-kitchen.jpg"
+        src="/assets/hero-kitchen.webp"
         alt="Hero Kitchen"
         fill
         priority

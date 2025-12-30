@@ -4,7 +4,7 @@ const trendingRecipes = [
   {
     id: 1,
     title: "Golden Turmeric Noodle Bowl",
-    image: "/assets/turmeric-noodles.jpg",
+    image: "/assets/turmeric-noodles.webp",
     time: "20 Mins",
     difficulty: "Easy",
     protein: "High Protein",
@@ -13,7 +13,7 @@ const trendingRecipes = [
   {
     id: 2,
     title: "Spicy Roasted Veggie Tacos",
-    image: "/assets/veggie-tacos.jpg",
+    image: "/assets/veggie-tacos.webp",
     time: "20 Mins",
     difficulty: "Easy",
     protein: "High Protein",
@@ -22,7 +22,7 @@ const trendingRecipes = [
   {
     id: 3,
     title: "Creamy Spinach & Mushroom Pasta",
-    image: "/assets/mushroom-pasta.jpg",
+    image: "/assets/mushroom-pasta.webp",
     time: "30 Mins",
     difficulty: "Easy",
     protein: "High Protein",
