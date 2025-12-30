@@ -24,11 +24,8 @@ export class RecipeService {
 
       const prompt = `
 You are a professional chef and nutrition expert.
-
 User searched for the food item: "${foodItem}"
-
 Generate a complete recipe in strictly VALID JSON format. Do not include markdown code blocks (like \`\`\`json). Just the raw JSON string.
-
 Schema:
 {
   "name": "Dish Name",
@@ -59,7 +56,6 @@ Schema:
     "Cooking tip 2"
   ]
 }
-
 Rules:
 - Keep instructions simple and beginner-friendly.
 - Use widely available ingredients.
