@@ -29,7 +29,6 @@ export default function Home() {
 
   return (
     <main className="min-h-screen">
-      <Navbar />
       <HeroSection />
       
       {isAuthenticated === true && (
