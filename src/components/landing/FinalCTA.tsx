@@ -20,12 +20,7 @@ export const FinalCTA = () => {
             <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
               <Link href="/signup">
                 <Button size="lg" className="bg-white text-[#AA4D4D] hover:bg-white/90 rounded-full px-12 py-8 text-2xl font-bold shadow-xl">
-                  🚀 Get Started for Free
-                </Button>
-              </Link>
-              <Link href="/signin">
-                <Button size="lg" variant="outline" className="border-white text-white hover:bg-white/10 rounded-full px-12 py-8 text-2xl font-bold">
-                   Sign In Now
+                  Get Started for Free
                 </Button>
               </Link>
             </div>
