@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Leaf } from "lucide-react";
 import { useEffect, useState } from "react";
 import api from "@/lib/axios";
+import { useRouter } from "next/navigation";
 
 import { User } from "@/types";
 import {
@@ -28,6 +29,7 @@ import {
 
 export function Navbar() {
   const [user, setUser] = useState<User | null>(null);
+  const router = useRouter();
 
   useEffect(() => {
     api.get("/auth/curruser")
@@ -42,7 +44,8 @@ export function Navbar() {
   const handleLogout = async () => {
     await api.post("/auth/logout");
     setUser(null);      
-    window.location.href = "/";
+    router.push("/");
+    router.refresh();
   };
 
   return (

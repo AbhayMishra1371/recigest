@@ -44,7 +44,7 @@ export default function Home() {
           <HowItWorks />
           <Benefits />
           <SocialProof />
-          <Pricing />
+          {/* <Pricing /> */}
           <FAQ />
           <FinalCTA />
         </>

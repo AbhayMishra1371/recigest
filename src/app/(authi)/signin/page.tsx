@@ -35,7 +35,8 @@ export default function SignInPage() {
 
       if (res.data.success) {
         toast.success("Signed in successfully")
-        router.push("/") // Redirect to home
+        router.push("/")
+        router.refresh()
       } else {
         toast.error(res.data.error || "Invalid credentials")
       }
@@ -45,7 +46,7 @@ export default function SignInPage() {
       setLoading(false)
     }
   }
-;
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#F5F3EE] via-[#E8E5DC] to-[#D4CFC0] flex items-center justify-center p-6">
       <div className="w-full max-w-md">
@@ -124,7 +125,8 @@ export default function SignInPage() {
 
             <Button
               type="submit"
-            className="w-full h-12 bg-[#009933] hover:bg-[#33cc33] text-black rounded-xl font-medium text-lg" onClick={handleSubmit}
+              disabled={loading}
+              className="w-full h-12 bg-[#009933] hover:bg-[#33cc33] text-black rounded-xl font-medium text-lg"
             >
               Sign In
             </Button>

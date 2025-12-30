@@ -149,10 +149,15 @@ const HeroSection = () => {
           </div>
         ) : (
           isAuthenticated === false && (
-            <div className="animate-slide-up flex flex-col items-center gap-6 md:gap-8 text-center max-w-2xl">
-              <h1 className="text-4xl mt-12 md:mt-16 md:text-7xl font-black text-[#3D4A3E] leading-[1.1]">
-                Turn Your Leftovers Into <span className="text-[#AA4D4D]">Gourmet Meals</span> with AI
-              </h1>
+            <div className="animate-slide-up w-full flex flex-col items-center gap-6 md:gap-8 text-center max-w-7xl">
+             <h1 className="text-4xl mt-24 md:text-6xl font-black text-[#3D4A3E] leading-tight text-center">
+  <span className="block whitespace-nowrap">
+    Turn Your Leftovers Into
+  </span>
+  <span className="block whitespace-nowrap text-[#AA4D4D]">
+    Gourmet Meals with AI
+  </span>
+</h1>
               <p className="text-lg md:text-2xl text-gray-700 font-medium max-w-xl mx-auto px-4">
                 The smartest way to cook. Simply list your ingredients and let our AI chef do the rest.
               </p>
