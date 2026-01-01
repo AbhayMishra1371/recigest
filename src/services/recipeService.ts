@@ -24,44 +24,19 @@ export class RecipeService {
 
       const prompt = `
 You are a professional chef and nutrition expert.
-User searched for the food item: "${foodItem}"
-Generate a complete recipe in strictly VALID JSON format. Do not include markdown code blocks (like \`\`\`json). Just the raw JSON string.
-Schema:
-{
-  "name": "Dish Name",
-  "description": "Short appetizing description (2-3 lines)",
-  "cuisine": "Cuisine Type",
-  "time": {
-    "prep": "10 min",
-    "cook": "20 min",
-    "total": "30 min"
-  },
-  "difficulty": "Easy/Medium/Hard",
-  "calories": "500 kcal",
-  "macros": {
-    "protein": "20g",
-    "carbs": "50g",
-    "fats": "15g"
-  },
-  "ingredients": [
-    "2 cups Rice",
-    "500g Chicken Breast"
-  ],
-  "instructions": [
-    "Step 1 description...",
-    "Step 2 description..."
-  ],
-  "tips": [
-    "Cooking tip 1",
-    "Cooking tip 2"
-  ]
-}
-Rules:
-- Keep instructions simple and beginner-friendly.
-- Use widely available ingredients.
-- Use metric units.
-- Make it accurate and safe for consumption.
-- If the dish is unhealthy, suggest a healthier alternative in the tips.
+Generate a complete recipe for "${foodItem}" in valid JSON only (no markdown).
+Include:
+Name, description (2–3 lines), cuisine
+Time (prep, cook, total)
+Difficulty, calories, macros
+Ingredients list
+Step-by-step instructions
+Helpful cooking tips
+Guidelines:
+Use simple, beginner-friendly steps
+Use common ingredients and metric units
+Ensure food safety
+If unhealthy, suggest a healthier alternative in tips
       `;
 
       const result = await model.generateContent(prompt);
