@@ -4,11 +4,7 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Leaf } from "lucide-react";
-import { useEffect, useState } from "react";
-import api from "@/lib/axios";
 import { useRouter } from "next/navigation";
-
-import { User } from "@/types";
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -26,24 +22,14 @@ import {
     SheetTitle,
     SheetTrigger,
 } from "@/components/ui/sheet";
+import { useAuth } from "@/context/AuthContext";
 
 export function Navbar() {
-  const [user, setUser] = useState<User | null>(null);
+  const { user, logout } = useAuth();
   const router = useRouter();
 
-  useEffect(() => {
-    api.get("/auth/curruser")
-      .then(res => {
-        if (res.data.authenticated) {
-          setUser(res.data.user);
-        }
-      })
-      .catch(() => {});
-  }, []);
-
   const handleLogout = async () => {
-    await api.post("/auth/logout");
-    setUser(null);      
+    await logout();
     router.push("/");
     router.refresh();
   };

@@ -11,8 +11,12 @@ import { Leaf } from "lucide-react"
 
 import { toast } from "sonner"
 import { signupSchema } from "@/lib/validations/auth";
+import { useAuth } from "@/context/AuthContext";
+import { useRouter } from "next/navigation";
 
 export default function SignUpPage() {
+  const router = useRouter();
+  const { refreshUser } = useAuth();
 const [form, setForm] = useState({ name: "", email: "", password: "",confirmPassword:"" });
   const [loading, setLoading] = useState(false);
 
@@ -32,7 +36,8 @@ const [form, setForm] = useState({ name: "", email: "", password: "",confirmPass
       toast.success(res.data.message || "Account created successfully");
 
       if (res.data.success) {
-        window.location.href = "/";
+        await refreshUser();
+        router.push("/");
       }
     } catch (err: unknown) {
       if (typeof err === "object" && err !== null && "response" in err) {

@@ -42,7 +42,7 @@ export default function Home() {
           <LandingFeatures />
           <HowItWorks />
           <Benefits />
-          <SocialProof />
+          {/* <SocialProof /> */}
           {/* <Pricing /> */}
           <FAQ />
           <FinalCTA />

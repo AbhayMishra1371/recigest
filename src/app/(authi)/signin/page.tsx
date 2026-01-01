@@ -11,9 +11,11 @@ import { Leaf } from "lucide-react"
 import { toast } from "sonner"
 import { useRouter } from "next/navigation"
 import { signinSchema } from "@/lib/validations/auth";
+import { useAuth } from "@/context/AuthContext";
 
 export default function SignInPage() {
  const router = useRouter()
+ const { refreshUser } = useAuth()
 
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
@@ -35,6 +37,7 @@ export default function SignInPage() {
 
       if (res.data.success) {
         toast.success("Signed in successfully")
+        await refreshUser()
         router.push("/")
         router.refresh()
       } else {
