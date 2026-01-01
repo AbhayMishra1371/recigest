@@ -11,6 +11,7 @@ import { Navbar } from "@/components/Navbar";
 
 
 import { RecipeData } from "@/types";
+import { generateImageUrl } from "@/lib/image";
 
 export default function RecipePage() {
   const params = useParams();
@@ -37,12 +38,20 @@ export default function RecipePage() {
             let jsonRecipe;
             try {
               if (typeof res.data.recipe === 'string') {
-                  // Attempt to clean up common LLM issues (markdown blocks, leading/trailing junk)
-                  const cleanJson = res.data.recipe
-                    .replace(/```json/g, "")
-                    .replace(/```/g, "")
-                    .trim();
-                  jsonRecipe = JSON.parse(cleanJson);
+                  // Advanced cleaning: extract content between first { and last }
+                  let rawContent = res.data.recipe.trim();
+                  
+                  // Remove markdown code blocks if present
+                  rawContent = rawContent.replace(/^```json\n?/, '').replace(/\n?```$/, '');
+                  
+                  const firstBrace = rawContent.indexOf('{');
+                  const lastBrace = rawContent.lastIndexOf('}');
+                  
+                  if (firstBrace !== -1 && lastBrace !== -1) {
+                      rawContent = rawContent.substring(firstBrace, lastBrace + 1);
+                  }
+                  
+                  jsonRecipe = JSON.parse(rawContent);
               } else {
                   jsonRecipe = res.data.recipe;
               }
@@ -117,7 +126,7 @@ export default function RecipePage() {
                     </div>
                   )}
                   <NextImage
-                    src={`https://image.pollinations.ai/prompt/delicious ${query} dish professional food photography cinematic lighting?width=1280&height=720&nologo=true&seed=${Array.from(query).reduce((acc, char) => acc + char.charCodeAt(0), 0)}&model=flux`}
+                    src={generateImageUrl(query, recipe.visual_prompt)}
                     alt={recipe.name}
                     fill
                     priority

@@ -4,7 +4,7 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Leaf } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -27,6 +27,11 @@ import { useAuth } from "@/context/AuthContext";
 export function Navbar() {
   const { user, logout } = useAuth();
   const router = useRouter();
+  const pathname = usePathname();
+
+  // Hide navbar on signin and signup pages
+  const isAuthPage = pathname === "/signin" || pathname === "/signup";
+  if (isAuthPage) return null;
 
   const handleLogout = async () => {
     await logout();

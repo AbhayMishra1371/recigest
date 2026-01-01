@@ -4,6 +4,7 @@ import { generateRecipeWithGemini } from "@/lib/generate";
 import { ratelimit } from "@/lib/rateLimit";
 import redis from "@/lib/redis";
 import { recipeGenerateSchema } from "@/lib/validations/recipe";
+import { generateImageUrl } from "@/lib/image";
 
 export async function POST(req: Request) {
   try {
@@ -60,58 +61,61 @@ export async function POST(req: Request) {
     console.log(`Cache Miss for: ${food}`);
     const result = await generateRecipeWithGemini(food);
 
-    if (!result.success) {
+    if (!result.success || !result.recipe) {
       return NextResponse.json(
-        { success: false, error: result.error },
+        { success: false, error: result.error || "Failed to generate recipe" },
         { status: 500 }
       );
     }
 
+    // Try to extract visual_prompt for history
+    let visualPrompt = "";
+    try {
+        const parsed = JSON.parse(result.recipe.replace(/```json/g, "").replace(/```/g, "").trim());
+        visualPrompt = parsed.visual_prompt || "";
+    } catch (e) {
+        console.warn("Failed to parse recipe for visual_prompt", e);
+    }
+
     // Store in Redis (Upstash)
-    if (result.recipe) {
-        // Upstash redis.set supports options as third arg, less than 24h cache is safer for testing
-        await redis.set(cacheKey, result.recipe, { ex: 3600 * 24 });
+    // Upstash redis.set supports options as third arg, less than 24h cache is safer for testing
+    await redis.set(cacheKey, result.recipe, { ex: 3600 * 24 });
 
-        // Save to user history
-        const historyKey = `history:${user.userId}`;
-        const foodItem = food.trim();
-        
-        // Deduplicate and update history
+    // Save to user history
+    const historyKey = `history:${user.userId}`;
+    const foodItem = food.trim();
+    
+    // Generate an optimized image URL for history using the visual prompt if available
+    const imageUrl = generateImageUrl(foodItem, visualPrompt);
 
+    const historyEntry = JSON.stringify({
+        food: foodItem,
+        image: imageUrl
+    });
+    
+    // Fetch existing history to remove duplicates
+    const existingHistory = await redis.lrange(historyKey, 0, -1);
+    for (const entry of existingHistory) {
+        let foodInHistory: string | null = null;
         
-        // Generate a deterministic image URL for history
-        const deterministicSeed = Array.from(foodItem).reduce((acc, char) => acc + char.charCodeAt(0), 0);
-        const imageUrl = `https://image.pollinations.ai/prompt/delicious ${foodItem} dish professional food photography cinematic lighting?width=1280&height=720&nologo=true&seed=${deterministicSeed}&model=flux`;
-
-        const historyEntry = JSON.stringify({
-            food: foodItem,
-            image: imageUrl
-        });
-        
-        // Fetch existing history to remove duplicates (handles both old string format and new JSON format)
-        const existingHistory = await redis.lrange(historyKey, 0, -1);
-        for (const entry of existingHistory) {
-            let foodInHistory: string | null = null;
-            
-            if (typeof entry === 'string') {
-                try {
-                    const parsed = JSON.parse(entry);
-                    foodInHistory = typeof parsed === 'object' && parsed !== null ? parsed.food : entry;
-                } catch {
-                    foodInHistory = entry;
-                }
-            } else if (typeof entry === 'object' && entry !== null) {
-                foodInHistory = (entry as any).food || null;
+        if (typeof entry === 'string') {
+            try {
+                const parsed = JSON.parse(entry);
+                foodInHistory = typeof parsed === 'object' && parsed !== null ? parsed.food : entry;
+            } catch {
+                foodInHistory = entry;
             }
-
-            if (foodInHistory && foodInHistory.toLowerCase() === foodItem.toLowerCase()) {
-                await redis.lrem(historyKey, 0, entry);
-            }
+        } else if (typeof entry === 'object' && entry !== null) {
+            foodInHistory = (entry as any).food || null;
         }
 
-        await redis.lpush(historyKey, historyEntry);
-        await redis.ltrim(historyKey, 0, 4); // Keep only 5 most recent unique items
+        if (foodInHistory && foodInHistory.toLowerCase() === foodItem.toLowerCase()) {
+            await redis.lrem(historyKey, 0, entry);
+        }
     }
+
+    await redis.lpush(historyKey, historyEntry);
+    await redis.ltrim(historyKey, 0, 4); // Keep only 5 most recent unique items
 
     return NextResponse.json({
       success: true,

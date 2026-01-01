@@ -5,7 +5,6 @@ const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY as string);
 
 export class RecipeService {
   /**
-
    * @param foodItem The food item to generate a recipe for.
    */
   static async generateWithGemini(foodItem: string): Promise<RecipeGenerationResponse> {
@@ -14,9 +13,8 @@ export class RecipeService {
         throw new Error("Food item is required");
       }
 
-     
       const model = genAI.getGenerativeModel({
-        model: "gemini-1.5-flash",
+        model: "gemini-2.5-flash",
         generationConfig: {
           responseMimeType: "application/json",
         },
@@ -24,19 +22,26 @@ export class RecipeService {
 
       const prompt = `
 You are a professional chef and nutrition expert.
-Generate a complete recipe for "${foodItem}" in valid JSON only (no markdown).
+Generate a complete recipe for "${foodItem}" in valid JSON only.
+CRITICAL: Do NOT use markdown formatting (like asterisks for bold or bullet points) anywhere inside the JSON values. Use plain text only.
+
 Include:
-Name, description (2–3 lines), cuisine
-Time (prep, cook, total)
-Difficulty, calories, macros
-Ingredients list
-Step-by-step instructions
-Helpful cooking tips
+- name: Dish name
+- description: 2–3 lines describing the dish
+- cuisine: Cuisine type
+- visual_prompt: A high-quality food photo of "${foodItem}", professionally plated, soft natural lighting, realistic textures.
+- time: Object with prep, cook, total
+- difficulty: Easy, Medium, or Hard
+- calories: Total calories per serving
+- macros: Object with protein, carbs, fats
+- ingredients: Array of strings
+- instructions: Array of step-by-step strings
+- tips: Array of helpful cooking tips
 Guidelines:
-Use simple, beginner-friendly steps
-Use common ingredients and metric units
-Ensure food safety
-If unhealthy, suggest a healthier alternative in tips
+- Use simple, beginner-friendly steps
+- Use common ingredients and metric units
+- Ensure food safety
+- If unhealthy, suggest a healthier alternative in tips
       `;
 
       const result = await model.generateContent(prompt);
@@ -52,8 +57,12 @@ If unhealthy, suggest a healthier alternative in tips
         throw new Error("The chef returned an empty plate. Please try a different dish.");
       }
       
-      // Clean up potential markdown formatting
-      recipeText = recipeText.replace(/```json/g, "").replace(/```/g, "").trim();
+      // Clean up potential markdown formatting and strip unwanted characters
+      recipeText = recipeText
+        .replace(/```json/g, "")
+        .replace(/```/g, "")
+        .replace(/\*/g, "") // Strip all asterisks
+        .trim();
 
       return {
         success: true,

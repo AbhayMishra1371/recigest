@@ -37,6 +37,7 @@ export default function Home() {
 
       {isAuthenticated === false && (
         <>
+        
           <ProblemStatement />
           <Solution />
           <LandingFeatures />

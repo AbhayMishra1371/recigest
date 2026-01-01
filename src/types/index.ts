@@ -9,6 +9,7 @@ export interface RecipeData {
   name: string;
   description: string;
   cuisine: string;
+  visual_prompt: string;
   time: {
     prep: string;
     cook: string;
