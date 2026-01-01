@@ -81,7 +81,7 @@ export default function RecipePage() {
   return (
     <main className="min-h-screen bg-[#FDFBF7] pb-20">
       <Navbar />
-      <div className="container mx-auto px-4 pt-24 md:pt-32">
+      <div className="container mx-auto px-4 pt-28 md:pt-36">
         {loading ? (
           <div className="flex flex-col items-center justify-center min-h-[60vh] gap-6 animate-fade-in">
              <div className="relative">
@@ -111,12 +111,12 @@ export default function RecipePage() {
             
             {/* Header Section */}
             <div className="mb-8">
-                <Link href="/">
-                    <Button variant="ghost" className="rounded-full gap-2 text-gray-500 hover:text-[#3D4A3E] mb-6 pl-0 hover:bg-transparent">
-                        <ArrowLeft className="w-4 h-4" />
-                        Back to Search
-                    </Button>
-                </Link>
+                <Button variant="ghost" className="rounded-full gap-2 text-gray-500 hover:text-[#3D4A3E] mb-6 pl-0 hover:bg-transparent" asChild>
+                  <Link href="/">
+                    <ArrowLeft className="w-4 h-4" />
+                    Back to Search
+                  </Link>
+                </Button>
 
                 {/* Dynamic Hero Image */}
                 <div className="relative w-full h-[300px] md:h-[400px] mb-8 rounded-3xl overflow-hidden shadow-lg group bg-gray-100">

@@ -29,8 +29,7 @@ Include:
 - name: Dish name
 - description: 2–3 lines describing the dish
 - cuisine: Cuisine type
-- visual_prompt: A high-quality food photo of "${foodItem}", professionally plated, soft natural lighting, realistic textures.
-- time: Object with prep, cook, total
+- visual_prompt: A highly descriptive, one-line prompt for an AI image generator. It should describe the dish in a professional food photography style (e.g., "A rustic porcelain bowl of creamy mushroom risotto garnished with fresh thyme and shaved parmesan, soft natural lighting, macro food photography"). it will bbe to time consuming give a small propmt for this- time: Object with prep, cook, total
 - difficulty: Easy, Medium, or Hard
 - calories: Total calories per serving
 - macros: Object with protein, carbs, fats

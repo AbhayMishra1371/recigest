@@ -40,8 +40,8 @@ export function Navbar() {
   };
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 px-6 py-6">
-      <div className="max-w-7xl mx-auto flex items-center justify-between bg-[#F5F3EE]/50 backdrop-blur-md rounded-full px-8 py-4 shadow-sm">
+    <header className="fixed top-0 left-0 right-0 z-50 px-4 py-3 md:px-6 md:py-6">
+      <div className="max-w-7xl mx-auto flex items-center justify-between bg-[#F5F3EE]/50 backdrop-blur-md rounded-full px-4 py-2 md:px-8 md:py-4 shadow-sm">
 
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 bg-white rounded-lg flex items-center justify-center">
