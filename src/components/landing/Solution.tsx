@@ -1,7 +1,7 @@
 "use client";
 
-import { Sparkles, Brain, Clock } from "lucide-react";
-import Image from "next/image";
+import { Sparkles, Brain } from "lucide-react";
+
 
 export const Solution = () => {
   return (
@@ -32,7 +32,7 @@ export const Solution = () => {
                 </div>
                 <div>
                   <h4 className="font-bold  text-[#3D4A3E] mb-1">Zero Waste Focus</h4>
-                  <p className="text-gray-600">Turn your 'leftovers' into gourmet dishes and reduce your environmental footprint.</p>
+                  <p className="text-gray-600">Turn your &apos;leftovers&apos; into gourmet dishes and reduce your environmental footprint.</p>
                 </div>
               </div>
             </div>

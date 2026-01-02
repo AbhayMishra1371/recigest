@@ -1,5 +1,5 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
-import { RecipeData, RecipeGenerationResponse } from "@/types";
+import { RecipeGenerationResponse } from "@/types";
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY as string);
 
@@ -14,7 +14,7 @@ export class RecipeService {
       }
 
       const model = genAI.getGenerativeModel({
-        model: "gemini-2.5-flash",
+        model: "gemini-1.5-flash",
         generationConfig: {
           responseMimeType: "application/json",
         },
@@ -29,7 +29,8 @@ Include:
 - name: Dish name
 - description: 2–3 lines describing the dish
 - cuisine: Cuisine type
-- visual_prompt: A highly descriptive, one-line prompt for an AI image generator. It should describe the dish in a professional food photography style (e.g., "A rustic porcelain bowl of creamy mushroom risotto garnished with fresh thyme and shaved parmesan, soft natural lighting, macro food photography"). it will bbe to time consuming give a small propmt for this- time: Object with prep, cook, total
+- visual_prompt: A concise but descriptive one-line prompt for an AI image generator (professional food photography style).
+- time: Object with prep, cook, total
 - difficulty: Easy, Medium, or Hard
 - calories: Total calories per serving
 - macros: Object with protein, carbs, fats
@@ -68,11 +69,11 @@ Guidelines:
         food: foodItem,
         recipe: recipeText,
       };
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error("Recipe Service Error:", error);
       return {
         success: false,
-        error: error.message || "Failed to generate recipe",
+        error: error instanceof Error ? error.message : "Failed to generate recipe",
       };
     }
   }

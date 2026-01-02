@@ -34,7 +34,7 @@ export const SocialProof = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
           <div className="bg-white p-10 rounded-[2.5rem] relative">
             <p className="text-xl text-[#3D4A3E] mb-8 font-medium leading-relaxed italic">
-              "Recigest changed how I shop for groceries. I don't feel guilty about buying a lot because I know my AI chef will help me use every bit of it!"
+              &quot;This app has completely transformed my weeknight dinners. I don&apos;t have to think anymore!&quot;
             </p>
             <div className="flex items-center gap-4">
               <div className="w-12 h-12 bg-[#AA4D4D] rounded-full overflow-hidden relative">
@@ -54,7 +54,7 @@ export const SocialProof = () => {
 
           <div className="bg-white p-10 rounded-[2.5rem] relative">
             <p className="text-xl text-[#3D4A3E] mb-8 font-medium leading-relaxed italic">
-              "The search is so smart. It understands what I'm looking for even if I'm not sure of the name. Highly recommend!"
+              &quot;I love how it suggests recipes based on what&apos;s in my fridge. It&apos;s saved me so much money.&quot;
             </p>
             <div className="flex items-center gap-4">
               <div className="w-12 h-12 bg-[#5A7C5E] rounded-full overflow-hidden relative">

@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import api from "@/lib/axios";
 import { History, ArrowRight, Search, Loader2 } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 
 export function RecentSearches() {
   const [history, setHistory] = useState<{food: string, image: string | null}[]>([]);
@@ -60,10 +61,11 @@ export function RecentSearches() {
             {/* Background Image */}
             {item.image ? (
                 <div className="absolute inset-0 z-0">
-                    <img 
+                    <Image 
                         src={item.image} 
                         alt={item.food} 
-                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                        fill
+                        className="object-cover transition-transform duration-500 group-hover:scale-110"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
                 </div>

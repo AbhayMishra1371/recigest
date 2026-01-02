@@ -18,7 +18,7 @@ export async function GET() {
       authenticated: true,
       user: decoded,
     });
-  } catch (err) {
-    return NextResponse.json({ authenticated: false });
+  } catch {
+    return NextResponse.json({ success: false, error: "Invalid token" }, { status: 401 });
   }
 }

@@ -106,7 +106,7 @@ export async function POST(req: Request) {
                 foodInHistory = entry;
             }
         } else if (typeof entry === 'object' && entry !== null) {
-            foodInHistory = (entry as any).food || null;
+            foodInHistory = (entry as { food?: string }).food || null;
         }
 
         if (foodInHistory && foodInHistory.toLowerCase() === foodItem.toLowerCase()) {
@@ -124,10 +124,10 @@ export async function POST(req: Request) {
       isCached: false
     });
 
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Recipe Generate API Error:", error);
     return NextResponse.json(
-      { success: false, error: error.message || "Internal Server Error" },
+      { success: false, error: error instanceof Error ? error.message : "Internal Server Error" },
       { status: 500 }
     );
   }

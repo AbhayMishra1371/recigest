@@ -90,7 +90,7 @@ export default function RecipePage() {
             </div>
             <div className="flex flex-col items-center gap-2">
                 <h2 className="text-2xl font-bold text-[#3D4A3E]">The Chef is Cooking...</h2>
-                <p className="text-gray-500">Conjuring a delicious recipe for "{query}"</p>
+                <p className="text-gray-500">Conjuring a delicious recipe for &quot;{query}&quot;</p>
             </div>
             <Loader2 className="w-8 h-8 text-[#AA4D4D] animate-spin mt-4" />
           </div>
@@ -225,7 +225,7 @@ export default function RecipePage() {
 
                         <div className="bg-[#FFF3E0]/50 rounded-3xl p-6 border border-[#FFF3E0]">
                              <h4 className="font-bold text-[#E65100] mb-3 flex items-center gap-2">
-                                💡 Chef's Tips
+                                💡 Chef&apos;s Tips
                              </h4>
                              <ul className="list-disc list-inside text-sm text-[#E65100] space-y-1">
                                 {recipe.tips.map((tip, idx) => (

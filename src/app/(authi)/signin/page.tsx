@@ -43,8 +43,12 @@ export default function SignInPage() {
       } else {
         toast.error(res.data.error || "Invalid credentials")
       }
-    } catch (err: any) {
-      toast.error(err.response?.data?.message || "Login failed")
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        toast.error((err as { response?: { data?: { message?: string } } }).response?.data?.message || "Login failed");
+      } else {
+        toast.error("Login failed");
+      }
     } finally {
       setLoading(false)
     }
@@ -137,7 +141,7 @@ export default function SignInPage() {
 
           <div className="mt-6 text-center">
             <p className="text-[#6B7C6D]">
-              Don't have an account?{" "}
+              Don&apos;t have an account?{" "}
               <Link href="/signup" className="text-[#5A7C5E] font-medium hover:underline">
                 Sign up
               </Link>

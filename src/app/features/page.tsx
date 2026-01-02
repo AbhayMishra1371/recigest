@@ -1,7 +1,7 @@
 "use client"
 
 import { Navbar } from "@/components/Navbar"
-import { Sparkles, MessageSquare, ChefHat, Zap, Clock, Search } from "lucide-react"
+import { Sparkles, MessageSquare, ChefHat, Search } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
 import { useEffect, useState } from "react"

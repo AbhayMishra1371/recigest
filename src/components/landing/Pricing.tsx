@@ -42,7 +42,7 @@ export const Pricing = () => {
       <div className="container mx-auto px-6">
         <div className="text-center mb-16">
           <h2 className="text-4xl font-bold text-[#3D4A3E] mb-4">Simple, Transparent Pricing</h2>
-          <p className="text-gray-600">Choose the plan that's right for your kitchen.</p>
+          <p className="text-gray-600">Choose the plan that&apos;s right for your kitchen.</p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">

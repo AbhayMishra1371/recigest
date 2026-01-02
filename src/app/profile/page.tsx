@@ -56,7 +56,7 @@ export default function ProfilePage() {
       router.push("/")
      
       window.location.reload()
-    } catch (error) {
+    } catch {
       toast.error("Logout failed")
     }
   }

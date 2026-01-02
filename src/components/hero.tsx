@@ -176,8 +176,7 @@ const HeroSection = () => {
         {/* Tagline - Only show for authenticated users or hide if redundant */}
         {isAuthenticated === true && (
           <p className="text-lg text-black/90 text-center font-medium animate-fade-in">
-            
-            Our AI chef turns what you have into meals you'll love.
+            Our AI chef turns what you have into meals you&apos;ll love.
           </p>
         )}
 
