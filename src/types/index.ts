@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 export interface User {
   userId?: string;
   name: string;
@@ -5,7 +6,7 @@ export interface User {
   isPrivate?: boolean;
 }
 
-export interface RecipeData {
+export default interface RecipeData {
   name: string;
   description: string;
   cuisine: string;
@@ -32,4 +33,9 @@ export interface RecipeGenerationResponse {
   food?: string;
   recipe?: string;
   error?: string;
+}
+
+export interface MongooseCache {
+  conn: typeof mongoose | null;
+  promise: Promise<typeof mongoose> | null;
 }
