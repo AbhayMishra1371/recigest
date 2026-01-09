@@ -2,21 +2,32 @@ import mongoose, { Schema, Document, Model } from "mongoose";
 
 export interface IRecipe extends Document {
   user: mongoose.Schema.Types.ObjectId;
+
+  author: {
+    id?: mongoose.Schema.Types.ObjectId;
+    name: string;
+    type: "user" | "ai" | "external";
+  };
+
   name: string;
   description?: string;
   cuisine?: string;
+
   time?: {
     prep?: string;
     cook?: string;
     total?: string;
   };
+
   difficulty?: string;
   calories?: string;
+
   macros?: {
     protein?: string;
     carbs?: string;
     fats?: string;
   };
+
   ingredients: string[];
   instructions: string[];
   tips?: string[];
@@ -29,7 +40,23 @@ const RecipeSchema: Schema<IRecipe> = new Schema(
     user: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
-      required: true, 
+      required: true,
+    },
+
+    author: {
+      id: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+      },
+      name: {
+        type: String,
+        required: true,
+      },
+      type: {
+        type: String,
+        enum: ["user", "ai", "external"],
+        default: "ai",
+      },
     },
 
     name: { type: String, required: true },
@@ -62,7 +89,6 @@ const RecipeSchema: Schema<IRecipe> = new Schema(
     },
 
     tips: [String],
-
     image: String,
 
     source: {
