@@ -6,7 +6,7 @@ export interface User {
   isPrivate?: boolean;
 }
 
-export default interface RecipeData {
+export interface RecipeData {
   name: string;
   description: string;
   cuisine: string;
